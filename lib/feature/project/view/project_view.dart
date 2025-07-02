@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/mock/data.dart';
-import 'package:taskproject/core/utils/mock_utils.dart';
 import 'package:taskproject/feature/project/view/widget/project_detail_widget.dart';
 import 'package:taskproject/model/project_model.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProjectView extends StatefulWidget {
   const ProjectView({super.key});
-
 
   @override
   State<ProjectView> createState() => _ProjectViewState();
@@ -18,9 +19,19 @@ class _ProjectViewState extends State<ProjectView> {
 
   @override
   void initState() {
-    listA = MockData.listProjectMock.where((e) => e.type == "IN WORK").toList();
-    listB = MockData.listProjectMock.where((e) => e.type == "COMPLETE").toList();
+    listA = MockData.listProjectMock
+        .where((e) => e.typeProcess == "IN WORK")
+        .toList();
+    listB = MockData.listProjectMock
+        .where((e) => e.typeProcess == "COMPLETE")
+        .toList();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    print('dispose test');
+    super.dispose();
   }
 
   @override
@@ -28,28 +39,31 @@ class _ProjectViewState extends State<ProjectView> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('asdasd'),
+      appBar: AppBar(title: const Text('All of my projects')),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.7,
+              child: buildDragColumn("IN WORK", listA, listB, true),
+            ),
+            SizedBox(
+              width: size.width * 0.7,
+              child: buildDragColumn("COMPLETE", listB, listA, false),
+            ),
+          ],
+        ),
       ),
-      body:  SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          SizedBox(
-            width: size.width * 0.8,
-            child: buildDragColumn("IN WORK", listA, listB, true),
-          ),
-          SizedBox(
-            width: size.width * 0.8,
-            child: buildDragColumn("COMPLETE", listA, listB, false),
-          ),
-        ],
-      ),
-    )
     );
   }
 
-  Widget buildDragColumn(String title, List<ProjectModel> listA, List<ProjectModel> listB, bool inWork ) {
+  Widget buildDragColumn(
+    String title,
+    List<ProjectModel> listA,
+    List<ProjectModel> listB,
+    bool inWork,
+  ) {
     final int addCart = !inWork ? 0 : 1;
     return DragTarget<ProjectModel>(
       onWillAccept: (data) => true,
@@ -57,7 +71,7 @@ class _ProjectViewState extends State<ProjectView> {
         setState(() {
           listB.remove(project);
           if (!listA.contains(project)) {
-            project.type = title;
+            project.typeProcess = title;
             listA.add(project);
           }
         });
@@ -72,43 +86,28 @@ class _ProjectViewState extends State<ProjectView> {
           ),
           child: Column(
             children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              ///
+              _headerColumn(title: title, length: listA.length),
+              ///
               const SizedBox(height: 10),
-          Expanded(
-          child: ListView.builder(
-            itemCount: listA.length + addCart,
-            itemBuilder: (context, index) {
-              if (inWork && index == listA.length) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: InkWell(
-                    onTap: () {
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '+ Add card',
-                          style: TextStyle(color: Colors.blueAccent),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }
+              Expanded(
+                child: ListView.builder(
+                  itemCount: listA.length + addCart,
+                  itemBuilder: (context, index) {
+                    if (inWork && index == listA.length) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: InkWell(onTap: () {}, child: _buttonAdd()),
+                      );
+                    }
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: _buildDraggableCard(listA[index]),
-              );
-            },
-
-          ),
-        ),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: _buildDraggableCard(listA[index]),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         );
@@ -116,7 +115,65 @@ class _ProjectViewState extends State<ProjectView> {
     );
   }
 
+  Widget _headerColumn({required String title, required int length}) {
+    final color = ColorPool(AppColor.taskColors).getNext();
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: color, width: 3)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Text(title, style: AppTextStyle.textBodyTile()),
+              const SizedBox(width: 5,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.brown),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(length.toString(),style: const TextStyle(color:Colors.brown),),
+              ),
+            ],
+          ),
+          SizedBox(
+              width: 40,
+              child: SvgPicture.asset('assets/icons/menu-dots.svg',color: Colors.grey,fit: BoxFit.cover,))
+        ],
+      ),
+    );
+  }
 
+  Widget _buttonAdd() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: const Radius.circular(15),
+        color: Colors.blueAccent,
+        strokeWidth: 2,
+        dashPattern: const [6, 4],
+        // 6px line, 4px gap
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          color: Colors.grey[100], // màu nền trong viền
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.add, color: Colors.blue),
+                const SizedBox(width: 10),
+                Text('Add card', style: AppTextStyle.textTitleTask(Colors.brown)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDraggableCard(ProjectModel project) {
     return Draggable<ProjectModel>(
@@ -135,5 +192,4 @@ class _ProjectViewState extends State<ProjectView> {
       child: ProjectDetailWidget(project: project),
     );
   }
-
 }

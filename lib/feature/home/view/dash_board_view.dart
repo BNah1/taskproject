@@ -12,7 +12,8 @@ class DashBoardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSize.paddingDashBoard, horizontal: AppSize.paddingDashBoard),
+      padding: const EdgeInsets.symmetric(vertical: AppSize.paddingDashBoard,
+          horizontal: AppSize.paddingDashBoard),
       child: Column(
         children: [
           const SizedBox(
@@ -27,18 +28,17 @@ class DashBoardView extends StatelessWidget {
               const SizedBox(height: 250, child: ListProjectWidget()),
               'See all',
                   () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(builder: (_) => const ProjectView()),
-                    );
-                  }),
+                    Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
+                        builder: (context) => const ProjectView(), maintainState: false));
+
+              }),
           const SizedBox(height: 45,),
           Expanded(
             child: containTile(
                 'Your tasks',
                 const Expanded(child: ListTaskWidget()),
                 'Add tasks',
-                () {}),
+                    () {}),
           ),
         ],
       ),

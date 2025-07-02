@@ -20,7 +20,7 @@ class ContainerCustomTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSize.borderTile),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),

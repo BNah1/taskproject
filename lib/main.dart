@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/feature/login/view/on_boarding.dart';
 
 import 'core/constant/routes.dart';
 import 'feature/home/view/home_view.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeView(),
+      home: const OnBoardingView(),
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }
