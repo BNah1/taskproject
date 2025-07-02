@@ -41,7 +41,7 @@ class _ProjectViewState extends State<ProjectView> {
           ),
           SizedBox(
             width: size.width * 0.8,
-            child: buildDragColumn("COMPLETE", listA, listB, false),
+            child: buildDragColumn("COMPLETE", listB, listA, false),
           ),
         ],
       ),

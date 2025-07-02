@@ -18,12 +18,15 @@ class _BoardViewState extends State<BoardView> {
 
   @override
   void initState() {
+    updateListTask();
+    super.initState();
+  }
+  
+  void updateListTask(){
     listTask = MockData.listTaskMock
         .where((e) => e.taskDeadLineMin.day == time.day)
         .toList()
       ..sort((a, b) => a.taskDeadLineMin.hour.compareTo(b.taskDeadLineMin.hour));
-
-    super.initState();
   }
 
   @override
@@ -31,7 +34,7 @@ class _BoardViewState extends State<BoardView> {
     return  Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Schedule',style: AppTextStyle.dashboardTitle,)),
-        actions: [
+        actions: const [
           Icon(Icons.menu)
         ],
       ),
@@ -81,6 +84,7 @@ class _BoardViewState extends State<BoardView> {
               onTap: (){
                 setState(() {
                   time = date;
+                  updateListTask();
                 });
               },
               child: Container(
@@ -124,7 +128,7 @@ class _BoardViewState extends State<BoardView> {
   
   
   Widget listDailyTask(){
-    return Column(
+    return listTask.isEmpty ? const Center(child: Text('empty')) : Column(
       children: listTask.map((e) => TaskBoardTile(task: e)).toList(),
     );
   }

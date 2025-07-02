@@ -59,10 +59,11 @@ class _TaskTileState extends State<TaskTile> {
           Expanded(
             child: InkWell(
               onTap: (){
-                Navigator.of(context).pushNamed(
+                Navigator.of(context, rootNavigator: true).pushNamed(
                   AppRoutes.taskView,
                   arguments: widget.task,
                 );
+
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

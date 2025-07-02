@@ -43,7 +43,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin{
                 setState(() {});
               },
             ),
-            body: AppTab.tabView(_tabController),
+            body: TabBarView(
+              controller: _tabController,
+              children: AppTab.listTabView
+                  .map((tabView) => _TabNavigator(child: tabView))
+                  .toList(),
+            ),
           ),
 
           Positioned(
@@ -59,7 +64,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin{
 
   final Widget _buttonAdd = Center(
     child: Container(
-      padding: const EdgeInsets.all(5),
       height: 60,
       width: 60,
       decoration: BoxDecoration(
@@ -74,16 +78,23 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin{
         ],
       ),
       child: const Center(
-        child: Text(
-          '+',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.normal,
-            decoration: TextDecoration.none,
-          ),
-        ),
+        child: Icon(Icons.add,color: Colors.white,size: 40,)
       ),
     ),
   );
 
+}
+
+class _TabNavigator extends StatelessWidget {
+  final Widget child;
+  const _TabNavigator({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => child);
+      },
+    );
+  }
 }

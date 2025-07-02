@@ -26,3 +26,17 @@ void showToast(
     );
   }
 }
+
+void _showModal(BuildContext context, Widget child) {
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (BuildContext context) {
+      return FractionallySizedBox(
+        heightFactor: 0.4,
+        child: child,
+      );
+    },
+  );
+}
