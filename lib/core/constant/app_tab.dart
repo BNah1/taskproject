@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taskproject/feature/board/view/board_view.dart';
 import 'package:taskproject/feature/home/view/dash_board_view.dart';
 
-import 'app_style.dart';
-
 class AppTab{
 
   static List<Widget> listTabView = [

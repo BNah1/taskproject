@@ -21,7 +21,7 @@ class _TaskViewState extends State<TaskView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppString.titleTaskView,style: AppTextStyle.textBodyTile,),
+        title: Text(AppString.titleTaskView,style: AppTextStyle.textBodyTile(),),
         actions: const [Padding(
           padding: EdgeInsets.only(right: AppSize.paddingDashBoard),
           child: Icon(Icons.menu),
@@ -34,14 +34,14 @@ class _TaskViewState extends State<TaskView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: AppSize.paddingDashBoard,),
-            ContainerCustomTile(paddingInside: 20,color: Colors.white, child: Column(
+            ContainerCustomTile(paddingInside: 30,color: Colors.white, child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
 
                 //title
-                Text(widget.task.taskName,style: AppTextStyle.textBodyTile),
-                Text(widget.task.taskName,style: AppTextStyle.textHint(Colors.grey)),
+                Text(widget.task.taskName,style: AppTextStyle.textBodyTile()),
+                Text(widget.task.taskName,style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
                 const SizedBox(height: 10,),
 
                 //
@@ -68,7 +68,7 @@ class _TaskViewState extends State<TaskView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Team',style: AppTextStyle.textSubBody),
+        Text('Team',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
         const SizedBox(height: 10,),
         Stack(children: [
 
@@ -84,14 +84,11 @@ class _TaskViewState extends State<TaskView> {
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey, width: 2),
+                border: Border.all(color: Colors.black12, width: 2),
                 color: Colors.white,
               ),
               child: const Center(
-                child: Text(
-                  '+',
-                  style: TextStyle(fontSize: 12, color: Colors.blueAccent),
-                ),
+                child: Icon(Icons.add, color: Colors.blue,)
               ),
             )
 
@@ -109,9 +106,9 @@ class _TaskViewState extends State<TaskView> {
 
         Column(
           children: [
-            Text('My Projects',style: AppTextStyle.textSubBody,),
+            Text('My Projects',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey),),
             const SizedBox(height: 10,),
-            Text('${widget.task.projectId} tasks')
+            Text('${widget.task.subTasks.length} tasks', style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.blueGrey),)
           ],
         )
       ],
@@ -125,32 +122,32 @@ class _TaskViewState extends State<TaskView> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: AppSize.paddingMenu,),
-            Text('Deadline',style: AppTextStyle.textSubBody),
+            const SizedBox(height: AppSize.paddingDashBoard,),
+            Text('Deadline',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
             const SizedBox(height: 10,),
             _timeTile(Icons.lock_clock, '${formatDateHour(widget.task.taskDeadLineMin)} - ${formatDateHour(widget.task.taskDeadLineMax)}'),
             const SizedBox(height: 10,),
-            _timeTile(Icons.calendar_month_sharp, formatDate(widget.task.taskDeadLineMin))
+            _timeTile(Icons.calendar_month_sharp, formatDateCalender(widget.task.taskDeadLineMin))
           ],
         ),
 
         SizedBox(
-          height: 60,
-          width: 60,
+          height: 80,
+          width: 80,
           child: Stack(
             alignment: Alignment.center,
             children: [
               SizedBox(
-                height: 60,
-                width: 60,
+                height: 80,
+                width: 80,
                 child: CircularProgressIndicator(
                   value: widget.task.progress,
-                  strokeWidth: 6,
+                  strokeWidth: 8,
                   backgroundColor: Colors.grey[300],
                   color: Colors.blueAccent,
                 ),
               ),
-              Text('${(widget.task.progress * 100).round()}%',style: AppTextStyle.textSubBodyProject(Colors.black),),
+              Text('${(widget.task.progress * 100).round()}%',style: AppTextStyle.textBodyTile(),),
             ],
           ),
         )
@@ -163,9 +160,9 @@ class _TaskViewState extends State<TaskView> {
   Widget _timeTile(IconData icon, String text){
     return Row(
       children: [
-        Icon(icon),
+        Icon(icon, color: Colors.blueGrey,),
         const SizedBox(width: AppSize.paddingMenu,),
-        Text(text)
+        Text(text, style:  AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.blueGrey),)
       ],
     );
   }
@@ -175,14 +172,14 @@ class _TaskViewState extends State<TaskView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Description',style: AppTextStyle.textBodyTile),
+        Text('Description',style: AppTextStyle.textBodyTile()),
         const SizedBox(height: AppSize.paddingMenu,),
-        Text(widget.task.descriptions,style: AppTextStyle.textHint(Colors.grey),),
+        Text(widget.task.descriptions,style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey),),
         const SizedBox(height: AppSize.paddingDashBoard,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('SubTask',style: AppTextStyle.textBodyTile,),
+            Text('SubTask',style: AppTextStyle.textBodyTile(),),
             Text('+ Add task', style: AppTextStyle.dashboardAction,)
           ],
         ),

@@ -10,6 +10,10 @@ String formatDateHour(DateTime date) {
   return DateFormat('hh:mm a').format(date);
 }
 
+String formatTime(DateTime time) {
+  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+}
+
 String formatDateDay(DateTime date) {
   // return date.toString();
   return DateFormat('dd').format(date);

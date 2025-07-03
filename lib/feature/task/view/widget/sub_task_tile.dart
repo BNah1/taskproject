@@ -20,7 +20,7 @@ class _SubTaskTileState extends State<SubTaskTile> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Checkbox(
-            activeColor: Colors.green,
+            activeColor: Colors.blue,
             shape: const CircleBorder(),
             value: ticked,
             onChanged: (value) {
@@ -39,7 +39,7 @@ class _SubTaskTileState extends State<SubTaskTile> {
               children: [
                 Text(
                   widget.subTask,
-                  style: AppTextStyle.textHint(Colors.black),
+                  style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -11,6 +11,7 @@ class TaskModel {
   final List<String> subTasks;
   final String descriptions;
   final String urgent;
+  final String taskTypeProgress;
 
   TaskModel(
     this.taskName,
@@ -23,5 +24,6 @@ class TaskModel {
     this.projectId,
     this.taskDeadLineMax,
     this.progress,
+      this.taskTypeProgress,
   );
 }

@@ -39,7 +39,6 @@ Widget listUser(List<UserModel> list) {
       ],
     ),
   );
-
 }
 
 Widget _circleTile(String path, double radius){

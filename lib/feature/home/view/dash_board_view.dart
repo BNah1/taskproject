@@ -29,7 +29,7 @@ class DashBoardView extends StatelessWidget {
               'See all',
                   () {
                     Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
-                        builder: (context) => ProjectView(), maintainState: false));
+                        builder: (context) => const ProjectView(), maintainState: false));
 
               }),
           const SizedBox(height: 45,),

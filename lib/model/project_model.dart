@@ -10,8 +10,9 @@ class ProjectModel {
   final List<TaskModel> listTask;
   final double progress;
   final String description;
-  String type;
+  String typeProcess;
   final String urgent;
+  final String type;
 
   ProjectModel({
     required this.projectId,
@@ -22,7 +23,8 @@ class ProjectModel {
     required this.listTask,
     required this.progress,
     required this.description,
-    required this.type,
-    required this.urgent
+    required this.typeProcess,
+    required this.urgent,
+    required this.type
   });
 }
