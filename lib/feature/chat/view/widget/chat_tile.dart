@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/constant/routes.dart';
 import 'package:taskproject/core/utils/mock_utils.dart';
-import 'package:taskproject/core/utils/snapshot_utils.dart';
 import 'package:taskproject/core/utils/valid_utils.dart';
 
 class ChatTile extends StatelessWidget {
@@ -28,7 +27,6 @@ class ChatTile extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          print('asdsad');
           Navigator.of(context, rootNavigator: true).pushNamed(
               AppRoutes.chatBox,
               arguments: user.id

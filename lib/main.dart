@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/core/di/init.dart';
+import 'package:taskproject/feature/login/state/auth_state.dart';
 import 'package:taskproject/feature/login/view/on_boarding.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/constant/routes.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await AppInit.init();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: chatCubit),
+        BlocProvider(create: (_) => AuthenticationCubit())
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

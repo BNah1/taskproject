@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/mock/data.dart';
+import 'package:taskproject/core/utils/snapshot_utils.dart';
+import 'package:taskproject/feature/chat/state/chat_controller_model.dart';
+import 'package:taskproject/feature/chat/state/chat_state.dart';
 import 'package:taskproject/feature/chat/view/widget/chat_list.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class ChatsView extends StatefulWidget {
@@ -11,6 +15,17 @@ class ChatsView extends StatefulWidget {
 }
 
 class _ChatsViewState extends State<ChatsView> {
+
+  @override
+  void initState() {
+    Future.microtask(() => init());
+    super.initState();
+  }
+
+  Future<void> init() async {
+    await context.read<ChatCubit>().init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

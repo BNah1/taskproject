@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/constant/app_tab.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taskproject/feature/login/state/auth_state.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -27,44 +25,39 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers : [
-        BlocProvider(create: (_) => AuthenticationCubit())
-      ],
-      child: DefaultTabController(
-        length: AppTab.listTabView.length,
-        child: Stack(
-          children: [
-            Scaffold(
-              // appBar: AppBar(
-              //   title:  const Text(AppString.appName),
-              // ),
-              bottomNavigationBar: TabBar(
-                labelColor: Colors.pink,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: Colors.pink,
-                tabs: AppTab.getHomeScreenTabs(_tabController.index),
-                controller: _tabController,
-                onTap: (index) {
-                  setState(() {});
-                },
-              ),
-              body: TabBarView(
-                controller: _tabController,
-                children: AppTab.listTabView
-                    .map((tabView) => _TabNavigator(child: tabView))
-                    .toList(),
-              ),
+    return DefaultTabController(
+      length: AppTab.listTabView.length,
+      child: Stack(
+        children: [
+          Scaffold(
+            // appBar: AppBar(
+            //   title:  const Text(AppString.appName),
+            // ),
+            bottomNavigationBar: TabBar(
+              labelColor: Colors.pink,
+              unselectedLabelColor: Colors.grey,
+              indicatorColor: Colors.pink,
+              tabs: AppTab.getHomeScreenTabs(_tabController.index),
+              controller: _tabController,
+              onTap: (index) {
+                setState(() {});
+              },
             ),
+            body: TabBarView(
+              controller: _tabController,
+              children: AppTab.listTabView
+                  .map((tabView) => _TabNavigator(child: tabView))
+                  .toList(),
+            ),
+          ),
 
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 40,
-              child: _buttonAdd
-            ),
-          ],
-        ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 40,
+            child: _buttonAdd
+          ),
+        ],
       ),
     );
   }

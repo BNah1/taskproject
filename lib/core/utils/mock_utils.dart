@@ -53,6 +53,17 @@ Future<Map<String, List<Message>>> getListMessageAll() async {
   }
 }
 
+String getChatRoomId1(String myId, String userId, List<ChatRoom> rooms)  {
+  try {
+    final ChatRoom room = rooms.firstWhere(
+          (e) => e.members.contains(myId) && e.members.contains(userId),
+    );
+    return room.chatroomId;
+  } catch (e) {
+    return 'error';
+  }
+}
+
 Future<List<ChatRoom>> getChatRoom() async {
   await Future.delayed(const Duration(seconds: 1));
   return MockData.mockChatRooms;
