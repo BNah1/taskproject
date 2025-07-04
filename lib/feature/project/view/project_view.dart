@@ -66,8 +66,9 @@ class _ProjectViewState extends State<ProjectView> {
   ) {
     final int addCart = !inWork ? 0 : 1;
     return DragTarget<ProjectModel>(
-      onWillAccept: (data) => true,
-      onAccept: (project) {
+      onWillAcceptWithDetails: (data) => true,
+      onAcceptWithDetails: (projectDetails) {
+        final project = projectDetails.data;
         setState(() {
           listB.remove(project);
           if (!listA.contains(project)) {

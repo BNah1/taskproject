@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taskproject/feature/login/view/on_boarding.dart';
 
 import 'core/constant/routes.dart';
-import 'feature/home/view/home_view.dart';
 
 void main() {
   runApp(const MyApp());

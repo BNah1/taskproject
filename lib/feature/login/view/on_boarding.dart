@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:flutter/cupertino.dart' hide Image;
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:rive/rive.dart' hide Image;
@@ -55,7 +54,7 @@ class _OnBoardingViewState extends State<OnBoardingView>
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          _blurredBackground(),
+          // _blurredBackground(),
           _blurredShapes(),
           _onBoardingContent(),
           _signInModal(),

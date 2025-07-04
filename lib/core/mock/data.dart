@@ -1,13 +1,20 @@
+import 'package:taskproject/model/chat_room_model.dart';
+import 'package:taskproject/model/message_model.dart';
 import 'package:taskproject/model/project_model.dart';
 import 'package:taskproject/model/task_model.dart';
 import 'package:taskproject/model/user_model.dart';
 
+
+
+String myUid = 'u001';
+
+
 class MockData {
   static List<UserModel> listUserMock = [
     UserModel("Alice", "u001", "assets/avaters/avatar_1.jpg"),
-    UserModel("Bob", "u002", "assets/avaters/avatar_1.jpg"),
-    UserModel("Diana", "u003", "assets/avaters/avatar_1.jpg"),
-    UserModel("Urgot", "u004", "assets/avaters/avatar_1.jpg"),
+    UserModel("Bob", "u002", "assets/avaters/avatar_2.jpg"),
+    UserModel("Diana", "u003", "assets/avaters/avatar_3.jpg"),
+    UserModel("Urgot", "u004", "assets/avaters/avatar_5.jpg"),
   ];
 
   static List<TaskModel> listTaskMock = [
@@ -171,7 +178,8 @@ class MockData {
       // Diana
       listTask: listTaskMock.where((task) => task.projectId == "p001").toList(),
       progress: 0.7,
-      description: "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schema",
+      description:
+          "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schema",
       typeProcess: "IN WORK",
       urgent: "Mid",
       type: "Dev",
@@ -186,7 +194,8 @@ class MockData {
       // Diana
       listTask: listTaskMock.where((task) => task.projectId == "p003").toList(),
       progress: 0.7,
-      description: "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schemaPrepare the database schema",
+      description:
+          "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schemaPrepare the database schema",
       typeProcess: "IN WORK",
       urgent: "Low",
       type: "Design",
@@ -231,10 +240,116 @@ class MockData {
       // Urgot
       listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
       progress: 0.85,
-      description: "Prepare the database schemaPrepare the database schemaPrepare the database schema",
+      description:
+          "Prepare the database schemaPrepare the database schemaPrepare the database schema",
       typeProcess: "COMPLETE",
       urgent: "High",
       type: "Research",
+    ),
+  ];
+
+  static final Map<String, List<Message>>  mockMessage= {
+    'room_u001_u002': [
+      Message(
+        message: 'Hello u002, how are you?',
+        messageId: 'msg001',
+        senderId: 'u001',
+        receiverId: 'u002',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+        seen: true,
+      ),
+      Message(
+        message: 'I’m good, u001. Thanks! Just got back from lunch.',
+        messageId: 'msg002',
+        senderId: 'u002',
+        receiverId: 'u001',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 9)),
+        seen: true,
+      ),
+      Message(
+        message: 'Nice! What did you have?',
+        messageId: 'msg003',
+        senderId: 'u001',
+        receiverId: 'u002',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
+        seen: true,
+      ),
+      Message(
+        message: 'Just some noodles and iced coffee. Was craving something quick.',
+        messageId: 'msg004',
+        senderId: 'u002',
+        receiverId: 'u001',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 7)),
+        seen: true,
+      ),
+      Message(
+        message: 'Sounds good! Are you free later to catch up on the project?',
+        messageId: 'msg005',
+        senderId: 'u001',
+        receiverId: 'u002',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 6)),
+        seen: false,
+      ),
+    ],
+
+    'room_u001_u003': [
+      Message(
+        message: 'Hey u003, are you joining the meeting at 3 PM?',
+        messageId: 'msg006',
+        senderId: 'u001',
+        receiverId: 'u003',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 12)),
+        seen: true,
+      ),
+      Message(
+        message: 'Yes, I’ll be there in about 10 minutes. Just wrapping up another call.',
+        messageId: 'msg007',
+        senderId: 'u003',
+        receiverId: 'u001',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 11)),
+        seen: true,
+      ),
+      Message(
+        message: 'Cool, no rush. I’ll update the doc before we start.',
+        messageId: 'msg008',
+        senderId: 'u001',
+        receiverId: 'u003',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
+        seen: true,
+      ),
+      Message(
+        message: 'Perfect. Let me know if there’s anything you want me to review.',
+        messageId: 'msg009',
+        senderId: 'u003',
+        receiverId: 'u001',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 9)),
+        seen: false,
+      ),
+      Message(
+        message: 'Sure, will ping you shortly. Thanks!',
+        messageId: 'msg010',
+        senderId: 'u001',
+        receiverId: 'u003',
+        timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
+        seen: false,
+      ),
+    ],
+  };
+
+  static final List<ChatRoom> mockChatRooms = [
+    ChatRoom(
+      chatroomId: 'room_u001_u002',
+      lastMessage: 'I’m good, u001. Thanks!',
+      lastMessageTs: DateTime.now().subtract(const Duration(minutes: 4)),
+      members: ['u001', 'u002'],
+      createdAt: DateTime.now().subtract(const Duration(days: 10)),
+    ),
+    ChatRoom(
+      chatroomId: 'room_u001_u003',
+      lastMessage: 'Yes, I’ll be there in 10 minutes.',
+      lastMessageTs: DateTime.now().subtract(const Duration(minutes: 2)),
+      members: ['u001', 'u003'],
+      createdAt: DateTime.now().subtract(const Duration(days: 7)),
     ),
   ];
 }

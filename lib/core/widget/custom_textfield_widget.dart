@@ -25,7 +25,7 @@ class CustomTextFieldWidget extends StatelessWidget {
         children: [
           // Hiển thị errorText ở trên TextField
           if (errorText != null && errorText!.isNotEmpty)
-            Text('error'),
+            const Text('error'),
           TextField(
             controller: controller,
             onChanged: onChanged,

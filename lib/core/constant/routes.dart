@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskproject/feature/chat/sub_view/chat_box_view.dart';
 import 'package:taskproject/feature/home/view/home_view.dart';
 import 'package:taskproject/feature/login/view/on_boarding.dart';
 import 'package:taskproject/feature/task/view/task_view.dart';
@@ -15,6 +16,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String taskView = '/taskView';
   static const String onBoarding = '/onBoarding';
+  static const String chatBox = '/chatBox';
 
   static Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -28,6 +30,12 @@ class AppRoutes {
         final task = settings.arguments as TaskModel;
         return MaterialPageRoute(
           builder: (_) => TaskView(task: task),
+        );
+
+      case chatBox:
+        final userId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => ChatBoxView(userId: userId),
         );
 
       case onBoarding:

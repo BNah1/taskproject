@@ -16,13 +16,19 @@ class TaskTile extends StatefulWidget {
 
 class _TaskTileState extends State<TaskTile> {
   bool ticked = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSize.paddingMenu),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        padding: const EdgeInsets.symmetric(horizontal: AppSize.paddingMenu, vertical: AppSize.paddingDashBoard + 5),
+        margin: ticked
+            ? const EdgeInsets.all(AppSize.paddingMenu)
+            : const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSize.paddingMenu,
+          vertical: AppSize.paddingDashBoard + 5,
+        ),
         decoration: BoxDecoration(
           color: ticked ? Colors.white70 : Colors.white,
           borderRadius: BorderRadius.circular(AppSize.borderTile),
@@ -34,60 +40,54 @@ class _TaskTileState extends State<TaskTile> {
             ),
           ],
         ),
-        child:
-        Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-          Checkbox(
-            activeColor: Colors.green,
-            shape: const CircleBorder(),
-            side: const BorderSide(
-              color: Colors.green,
-              width: 2
-            ),
-            value: ticked,
-            onChanged: (value) {
-              print(value);
-              setState(() {
-                if(value != null) {
-                  ticked = value;
-                }
-              });
-            },
-          ),
-          const SizedBox(width: AppSize.paddingDashBoard,),
-          Expanded(
-            child: InkWell(
-              onTap: (){
-                Navigator.of(context, rootNavigator: true).pushNamed(
-                  AppRoutes.taskView,
-                  arguments: widget.task,
-                );
-
+            Checkbox(
+              activeColor: Colors.green,
+              shape: const CircleBorder(),
+              side: const BorderSide(color: Colors.green, width: 2),
+              value: ticked,
+              onChanged: (value) {
+                print(value);
+                setState(() {
+                  if (value != null) {
+                    ticked = value;
+                  }
+                });
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.task.taskName,
-                    style: AppTextStyle.textSubBodyProject(Colors.black),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(formatDate(widget.task.taskDeadLineMin),style: AppTextStyle.textSubBody)
-                ],
+            ),
+            const SizedBox(width: AppSize.paddingDashBoard),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).pushNamed(AppRoutes.taskView, arguments: widget.task);
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.task.taskName,
+                      style: AppTextStyle.textSubBodyProject(Colors.black),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      formatDate(widget.task.taskDeadLineMin),
+                      style: AppTextStyle.textSubBody,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-              width: 50,
-              child: listUser(widget.task.taskAssigned)),
-            const SizedBox(width: AppSize.paddingDashBoard,)
-        ],),
+            SizedBox(width: 50, child: listUser(widget.task.taskAssigned)),
+            const SizedBox(width: AppSize.paddingDashBoard),
+          ],
+        ),
       ),
     );
   }
-
-
-
 }

@@ -62,9 +62,11 @@ class _SignInViewState extends State<SignInView> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _isLoading = false;
-      });
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
       if (isValid) _confettiAnim.fire();
     });
 
@@ -119,7 +121,7 @@ class _SignInViewState extends State<SignInView> {
                       children: [
                         const Text(
                           "Sign In",
-                          style: TextStyle(fontFamily: "Poppins", fontSize: 34),
+                          style: TextStyle(fontSize: 34),
                         ),
                         const SizedBox(height: 24),
                         const Text(
@@ -136,7 +138,6 @@ class _SignInViewState extends State<SignInView> {
                             "Email",
                             style: TextStyle(
                                 color: CupertinoColors.secondaryLabel,
-                                fontFamily: "Inter",
                                 fontSize: 15),
                           ),
                         ),
@@ -152,7 +153,6 @@ class _SignInViewState extends State<SignInView> {
                             "Password",
                             style: TextStyle(
                                 color: CupertinoColors.secondaryLabel,
-                                fontFamily: "Inter",
                                 fontSize: 15),
                           ),
                         ),
@@ -191,7 +191,6 @@ class _SignInViewState extends State<SignInView> {
                                   "Sign In",
                                   style: TextStyle(
                                       fontSize: 17,
-                                      fontFamily: "Inter",
                                       fontWeight: FontWeight.bold),
                                 )
                               ],
@@ -283,7 +282,9 @@ class _SignInViewState extends State<SignInView> {
                     child: CupertinoButton(
                       padding: EdgeInsets.zero,
                       borderRadius: BorderRadius.circular(36 / 2),
-                      minSize: 36,
+                      onPressed: () {
+                        widget.closeModal!();
+                      }, minimumSize: const Size(36, 36),
                       child: Container(
                         width: 36,
                         height: 36,
@@ -303,9 +304,6 @@ class _SignInViewState extends State<SignInView> {
                           color: Colors.black,
                         ),
                       ),
-                      onPressed: () {
-                        widget.closeModal!();
-                      },
                     ),
                   ),
                 )
