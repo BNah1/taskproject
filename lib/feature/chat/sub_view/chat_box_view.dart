@@ -8,6 +8,7 @@ import 'package:taskproject/feature/chat/state/chat_controller_model.dart';
 import 'package:taskproject/feature/chat/state/chat_state.dart';
 import 'package:taskproject/feature/chat/sub_view/widget/chat_user_info.dart';
 import 'package:taskproject/feature/chat/sub_view/widget/message_list.dart';
+import 'package:taskproject/feature/login/state/auth_state.dart';
 import 'package:taskproject/model/message_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +41,8 @@ class _ChatBoxViewState extends State<ChatBoxView> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatControllerModel>(
       builder: (context, state) {
-        chatRoomId = getChatRoomId1(myUid, widget.userId, state.chatRooms);
+        final userId = context.watch<AuthenticationCubit>().state.userModel!.id;
+        chatRoomId = getChatRoomId1(userId, widget.userId, state.chatRooms);
         List<Message> messages = getListMessage(chatRoomId);
         return buildStateView(
           status: state.status,

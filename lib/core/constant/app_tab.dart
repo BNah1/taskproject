@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taskproject/feature/board/view/board_view.dart';
 import 'package:taskproject/feature/chat/view/chat_view.dart';
 import 'package:taskproject/feature/home/view/dash_board_view.dart';
+import 'package:taskproject/feature/setting/view/setting_view.dart';
 
 class AppTab{
 
@@ -9,7 +10,7 @@ class AppTab{
     const DashBoardView(),
     const BoardView(),
     const ChatsView(),
-    Container(color: Colors.yellow,),
+    const SettingView(),
   ];
 
   static TabBarView tabView(TabController tabController){

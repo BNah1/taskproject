@@ -2,6 +2,7 @@ import 'package:taskproject/model/user_model.dart';
 
 class TaskModel {
   final String projectId;
+  final String taskId;
   final String taskName;
   final DateTime taskDeadLineMin;
   final DateTime taskDeadLineMax;
@@ -15,6 +16,7 @@ class TaskModel {
 
   TaskModel(
     this.taskName,
+    this.taskId,
     this.taskDeadLineMin,
     this.taskAssigned,
     this.taskCreatedBy,
@@ -24,6 +26,6 @@ class TaskModel {
     this.projectId,
     this.taskDeadLineMax,
     this.progress,
-      this.taskTypeProgress,
+    this.taskTypeProgress,
   );
 }

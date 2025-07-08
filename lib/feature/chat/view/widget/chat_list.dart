@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taskproject/core/mock/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskproject/core/utils/snapshot_utils.dart';
 import 'package:taskproject/feature/chat/state/chat_controller_model.dart';
 import 'package:taskproject/feature/chat/state/chat_state.dart';
+import 'package:taskproject/feature/login/state/auth_state.dart';
 
 import 'chat_tile.dart';
 
@@ -16,6 +16,7 @@ class ChatList extends StatelessWidget {
     return BlocBuilder<ChatCubit, ChatControllerModel>(
       builder: (context, state) {
         return buildStateView(status: state.status, onSuccess: (){
+          final myUid = context.watch<AuthenticationCubit>().state.userModel!.id;
           final list = state.chatRooms;
           return ListView.builder(
             itemCount: list.length,

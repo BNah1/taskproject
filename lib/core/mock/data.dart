@@ -4,22 +4,44 @@ import 'package:taskproject/model/project_model.dart';
 import 'package:taskproject/model/task_model.dart';
 import 'package:taskproject/model/user_model.dart';
 
-
-
 String myUid = 'u001';
-
 
 class MockData {
   static List<UserModel> listUserMock = [
-    UserModel("Alice", "u001", "assets/avaters/avatar_1.jpg"),
-    UserModel("Bob", "u002", "assets/avaters/avatar_2.jpg"),
-    UserModel("Diana", "u003", "assets/avaters/avatar_3.jpg"),
-    UserModel("Urgot", "u004", "assets/avaters/avatar_5.jpg"),
+    UserModel(
+      userName: "Alice",
+      id: "u001",
+      pathImage: "assets/avaters/avatar_1.jpg",
+      userLoginName: "tk01",
+      passLoginName: "123456",
+    ),
+    UserModel(
+      userName: "Bob",
+      id: "u002",
+      pathImage: "assets/avaters/avatar_2.jpg",
+      userLoginName: "tk02",
+      passLoginName: "123456",
+    ),
+    UserModel(
+      userName: "Diana",
+      id: "u003",
+      pathImage: "assets/avaters/avatar_3.jpg",
+      userLoginName: "tk03",
+      passLoginName: "123456",
+    ),
+    UserModel(
+      userName: "Urgot",
+      id: "u004",
+      pathImage: "assets/avaters/avatar_5.jpg",
+      userLoginName: "tk04",
+      passLoginName: "123456",
+    ),
   ];
 
   static List<TaskModel> listTaskMock = [
     TaskModel(
       "Design Homepage",
+      "t01",
       DateTime(2025, 7, 10),
       [listUserMock[0], listUserMock[1], listUserMock[2]],
       // Alice + Bob + Diana
@@ -35,6 +57,7 @@ class MockData {
     ),
     TaskModel(
       "Build Login Page asd",
+      "t02",
       DateTime(2025, 7, 11, 12),
       [listUserMock[0]],
       // Alice
@@ -50,6 +73,7 @@ class MockData {
     ),
     TaskModel(
       "Setup Database",
+      "t03",
       DateTime(2025, 7, 13),
       [listUserMock[0], listUserMock[2]],
       // Alice + Diana
@@ -65,6 +89,7 @@ class MockData {
     ),
     TaskModel(
       "Write Unit Tests",
+      "t04",
       DateTime(2025, 7, 16),
       [listUserMock[0]],
       // Alice
@@ -80,6 +105,7 @@ class MockData {
     ),
     TaskModel(
       "Setup Database",
+      "t05",
       DateTime(2025, 7, 13),
       [listUserMock[0], listUserMock[2]],
       // Alice + Diana
@@ -95,6 +121,7 @@ class MockData {
     ),
     TaskModel(
       "Write Unit Tests",
+      "t06",
       DateTime(2025, 7, 16),
       [listUserMock[0]],
       // Alice
@@ -111,6 +138,7 @@ class MockData {
 
     TaskModel(
       "Check UI Review",
+      "t07",
       DateTime(2025, 7, 2, 9, 0),
       // 9:00 AM
       [listUserMock[0]],
@@ -125,6 +153,7 @@ class MockData {
     ),
     TaskModel(
       "Fix Login Bug",
+      "t08",
       DateTime(2025, 7, 2, 11, 45),
       // 9:45 AM
       [listUserMock[1]],
@@ -139,6 +168,7 @@ class MockData {
     ),
     TaskModel(
       "Write Documentation",
+      "t09",
       DateTime(2025, 7, 2, 13, 15),
       // 10:15 AM
       [listUserMock[2]],
@@ -153,6 +183,7 @@ class MockData {
     ),
     TaskModel(
       "Write Documentation",
+      "t010",
       DateTime(2025, 7, 2, 16, 15),
       // 10:15 AM
       [listUserMock[2]],
@@ -257,14 +288,14 @@ class MockData {
       listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
       progress: 0.85,
       description:
-      "Prepare the database schemaPrepare the database schemaPrepare the database schema",
+          "Prepare the database schemaPrepare the database schemaPrepare the database schema",
       typeProcess: "TODO",
       urgent: "High",
       type: "Research",
     ),
   ];
 
-  static final Map<String, List<Message>>  mockMessage= {
+  static final Map<String, List<Message>> mockMessage = {
     'room_u001_u002': [
       Message(
         message: 'Hello u002, how are you?',
@@ -291,7 +322,8 @@ class MockData {
         seen: true,
       ),
       Message(
-        message: 'Just some noodles and iced coffee. Was craving something quick.',
+        message:
+            'Just some noodles and iced coffee. Was craving something quick.',
         messageId: 'msg004',
         senderId: 'u002',
         receiverId: 'u001',
@@ -318,7 +350,8 @@ class MockData {
         seen: true,
       ),
       Message(
-        message: 'Yes, I’ll be there in about 10 minutes. Just wrapping up another call.',
+        message:
+            'Yes, I’ll be there in about 10 minutes. Just wrapping up another call.',
         messageId: 'msg007',
         senderId: 'u003',
         receiverId: 'u001',
@@ -334,7 +367,8 @@ class MockData {
         seen: true,
       ),
       Message(
-        message: 'Perfect. Let me know if there’s anything you want me to review.',
+        message:
+            'Perfect. Let me know if there’s anything you want me to review.',
         messageId: 'msg009',
         senderId: 'u003',
         receiverId: 'u001',

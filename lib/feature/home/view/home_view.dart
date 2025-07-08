@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskproject/core/constant/app_tab.dart';
+import 'package:taskproject/feature/project/state/project_state.dart';
+import 'package:taskproject/feature/task/state/task_state.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,7 +17,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin{
   @override
   void initState() {
     _tabController = TabController(length: AppTab.listTabView.length, vsync: this);
+    Future.microtask(() => init());
     super.initState();
+  }
+
+  Future<void> init() async {
+    Future.wait([
+    context.read<TaskCubit>().init(),
+    context.read<ProjectCubit>().init()
+    ]);
   }
 
   @override

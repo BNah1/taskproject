@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive/rive.dart' hide LinearGradient;
 import 'package:taskproject/core/constant/app_path.dart';
 import 'package:taskproject/core/constant/routes.dart';
 import 'package:taskproject/core/constant/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:taskproject/core/utils/toast_utils.dart';
+import 'package:taskproject/feature/login/state/auth_state.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({Key? key, this.closeModal}) : super(key: key);
@@ -48,36 +51,66 @@ class _SignInViewState extends State<SignInView> {
     controller.findInput<bool>("Trigger explosion") as SMITrigger;
   }
 
-  void login() {
+  @override
+  void initState() {
+    _emailController.text = "tk01";
+    _passController.text = "123456";
+    super.initState();
+  }
+
+  void login() async {
+    if (_isLoading) return;
+
     setState(() {
       _isLoading = true;
     });
+
+    final String? result = await context.read<AuthenticationCubit>().login(
+      _emailController.text.trim(),
+      _passController.text.trim(),
+    );
 
     bool isEmailValid = _emailController.text.trim().isNotEmpty;
     bool isPassValid = _passController.text.trim().isNotEmpty;
     bool isValid = isEmailValid && isPassValid;
 
-    Future.delayed(const Duration(seconds: 1), () {
-      isValid ? _successAnim.fire() : _errorAnim.fire();
-    });
+    // // Kích hoạt animation
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   isValid ? _successAnim.fire() : _errorAnim.fire();
+    // });
 
+    // Tắt loading + trigger confetti nếu valid
     Future.delayed(const Duration(seconds: 3), () {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
-      if (isValid) _confettiAnim.fire();
+      // if (isValid) _confettiAnim.fire();
     });
 
-    if (isValid) {
-      Future.delayed(const Duration(seconds: 4), () {
-        widget.closeModal!();
-        _emailController.text = "";
-        _passController.text = "";
-      });
+    if (result == null) {
+      if (mounted) {
+        Navigator.of(context).restorablePushReplacementNamed(AppRoutes.home);
+      }
+
+      // Đóng animation
+      if (isValid) {
+        Future.delayed(const Duration(seconds: 4), () {
+          if (mounted) {
+            widget.closeModal?.call();
+            _emailController.clear();
+            _passController.clear();
+          }
+        });
+      }
+    } else {
+      if (mounted) {
+        showToast(context, result, 'Error', 'ok');
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +230,6 @@ class _SignInViewState extends State<SignInView> {
                             ),
                             onPressed: () {
                               if (!_isLoading) login();
-                              Navigator.of(context).restorablePushReplacementNamed(AppRoutes.home);
                             },
                           ),
                         ),

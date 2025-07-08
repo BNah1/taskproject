@@ -15,6 +15,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => GlobalCubit()),
         BlocProvider.value(value: chatCubit),
         BlocProvider.value(value: projectCubit),
+        BlocProvider.value(value: taskCubit),
         BlocProvider(create: (_) => AuthenticationCubit())
       ],
       child: const MyApp(),

@@ -1,14 +1,9 @@
 import 'package:taskproject/core/mock/data.dart';
 import 'package:taskproject/model/chat_room_model.dart';
 import 'package:taskproject/model/message_model.dart';
-import 'package:taskproject/model/task_model.dart';
 import 'package:taskproject/model/user_model.dart';
 
 
-Future<List<TaskModel>> getListTask() async {
-  await Future.delayed(const Duration(seconds: 2));
-  return MockData.listTaskMock;
-}
 
 List<Message> getListMessage(String chatRoomId) {
   final messages = MockData.mockMessage[chatRoomId];
@@ -18,11 +13,6 @@ List<Message> getListMessage(String chatRoomId) {
   return messages;
 }
 
-Future<Map<String, List<Message>>> getListMessageAll() async {
-  await Future.delayed(const Duration(seconds: 1));
-  final messages = MockData.mockMessage;
-  return messages;
-}
 
  UserModel getUser(String userId)  {
   final list = MockData.listUserMock;
@@ -37,16 +27,6 @@ Future<Map<String, List<Message>>> getListMessageAll() async {
   return path;
 }
 
-  String getChatRoomId(String myId, String userId)  {
-  try {
-    final ChatRoom room = MockData.mockChatRooms.firstWhere(
-          (e) => e.members.contains(myId) && e.members.contains(userId),
-    );
-    return room.chatroomId;
-  } catch (e) {
-    return 'error';
-  }
-}
 
 String getChatRoomId1(String myId, String userId, List<ChatRoom> rooms)  {
   try {
@@ -59,7 +39,3 @@ String getChatRoomId1(String myId, String userId, List<ChatRoom> rooms)  {
   }
 }
 
-Future<List<ChatRoom>> getChatRoom() async {
-  await Future.delayed(const Duration(seconds: 1));
-  return MockData.mockChatRooms;
-}
