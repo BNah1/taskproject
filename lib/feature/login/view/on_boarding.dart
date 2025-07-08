@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
-import 'package:rive/rive.dart' hide Image;
+import 'package:rive/rive.dart';
 import 'package:taskproject/core/constant/app_path.dart';
 import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/constant/theme.dart';
@@ -63,18 +63,18 @@ class _OnBoardingViewState extends State<OnBoardingView>
     );
   }
 
-  Widget _blurredBackground() => ImageFiltered(
-    imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-    child: Center(
-      child: OverflowBox(
-        maxWidth: double.infinity,
-        child: Transform.translate(
-          offset: const Offset(200, 100),
-          child: Image.asset(AppPath.spline, fit: BoxFit.cover),
-        ),
-      ),
-    ),
-  );
+  // Widget _blurredBackground() => ImageFiltered(
+  //   imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+  //   child: Center(
+  //     child: OverflowBox(
+  //       maxWidth: double.infinity,
+  //       child: Transform.translate(
+  //         offset: const Offset(200, 100),
+  //         child: Image.asset(AppPath.spline, fit: BoxFit.cover),
+  //       ),
+  //     ),
+  //   ),
+  // );
 
   Widget _blurredShapes() => ImageFiltered(
     imageFilter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),

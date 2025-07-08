@@ -4,6 +4,7 @@ import 'package:taskproject/feature/login/state/auth_state.dart';
 import 'package:taskproject/feature/login/view/on_boarding.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/constant/routes.dart';
+import 'core/state/base_cubit.dart';
 
 Future<void> main() async {
   await AppInit.init();
@@ -11,7 +12,9 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => GlobalCubit()),
         BlocProvider.value(value: chatCubit),
+        BlocProvider.value(value: projectCubit),
         BlocProvider(create: (_) => AuthenticationCubit())
       ],
       child: const MyApp(),

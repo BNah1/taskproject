@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart' hide LinearGradient, Image;
+import 'package:rive/rive.dart' hide LinearGradient;
 import 'package:taskproject/core/constant/app_path.dart';
 import 'package:taskproject/core/constant/routes.dart';
 import 'package:taskproject/core/constant/theme.dart';

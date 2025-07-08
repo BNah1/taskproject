@@ -27,4 +27,34 @@ class ProjectModel {
     required this.urgent,
     required this.type
   });
+
+  ProjectModel copyWith({
+    String? projectId,
+    String? projectName,
+    DateTime? taskDeadLine,
+    List<UserModel>? taskAssigned,
+    UserModel? taskCreatedBy,
+    List<TaskModel>? listTask,
+    double? progress,
+    String? description,
+    String? typeProcess,
+    String? urgent,
+    String? type,
+  }) {
+    return ProjectModel(
+      projectId: projectId ?? this.projectId,
+      projectName: projectName ?? this.projectName,
+      taskDeadLine: taskDeadLine ?? this.taskDeadLine,
+      taskAssigned: taskAssigned ?? this.taskAssigned,
+      taskCreatedBy: taskCreatedBy ?? this.taskCreatedBy,
+      listTask: listTask ?? this.listTask,
+      progress: progress ?? this.progress,
+      description: description ?? this.description,
+      typeProcess: typeProcess ?? this.typeProcess,
+      urgent: urgent ?? this.urgent,
+      type: type ?? this.type,
+    );
+  }
+
+
 }

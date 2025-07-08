@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/mock/data.dart';
-import 'package:taskproject/core/utils/snapshot_utils.dart';
-import 'package:taskproject/feature/chat/state/chat_controller_model.dart';
 import 'package:taskproject/feature/chat/state/chat_state.dart';
 import 'package:taskproject/feature/chat/view/widget/chat_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class ChatsView extends StatefulWidget {
   const ChatsView({super.key});
@@ -15,7 +12,6 @@ class ChatsView extends StatefulWidget {
 }
 
 class _ChatsViewState extends State<ChatsView> {
-
   @override
   void initState() {
     Future.microtask(() => init());
@@ -32,25 +28,29 @@ class _ChatsViewState extends State<ChatsView> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, bottom: 10, left: 20, right: 20),
+          padding: const EdgeInsets.only(
+            top: 10,
+            bottom: 10,
+            left: 20,
+            right: 20,
+          ),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 // build chats app bar
                 _buildChatsAppBar(),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
 
                 // Search widget
                 _buildChatsSearchWidget(),
 
-                const SizedBox(height: 30),
+                _listUser(),
+
+                const SizedBox(height: 15),
 
                 // Chats List
-                const SizedBox(
-                  height: 600,
-                  child: ChatList(),
-                ),
+                const SizedBox(height: 600, child: ChatList()),
               ],
             ),
           ),
@@ -60,28 +60,67 @@ class _ChatsViewState extends State<ChatsView> {
   }
 
   Widget _buildChatsAppBar() => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-       CircleAvatar(
-        radius: 28,
-        backgroundImage: AssetImage(
-            MockData.listUserMock[0].pathImage
-        ),
+      Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(100)),
+         child: const Icon(Icons.menu,size: 35,),
+          ),
+          // CircleAvatar(
+          //   radius: 28,
+          //   backgroundImage: AssetImage(MockData.listUserMock[0].pathImage),
+          // ),
+          const SizedBox(width: 15),
+          const Text(
+            'Messages',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
-      const SizedBox(width: 5),
-      const Text(
-        'Chats',
-        style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-        ),
+      Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.black12,
+            borderRadius: BorderRadius.circular(100)),
+        child: const Icon(Icons.edit,size: 35,),
       ),
-      const Spacer(),
     ],
   );
 
+  Widget _listUser() {
+    return Container(
+      height: 100,
+      padding: const EdgeInsets.only(top: 10),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: MockData.listUserMock.length,
+        itemBuilder: (context, index) {
+          final user = MockData.listUserMock[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 32,
+                  backgroundImage: AssetImage(user.pathImage),
+                ),
+                Text(user.userName),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildChatsSearchWidget() => Container(
     decoration: BoxDecoration(
-      color: Colors.grey,
+      color: Colors.black12,
       borderRadius: BorderRadius.circular(15),
     ),
     child: const Row(

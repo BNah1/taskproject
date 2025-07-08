@@ -185,7 +185,7 @@ class MockData {
       type: "Dev",
     ),
     ProjectModel(
-      projectId: "p003",
+      projectId: "p002",
       projectName: "Frontend Redesign Prepare the database schema",
       taskDeadLine: DateTime(2025, 7, 20),
       taskAssigned: [listUserMock[0], listUserMock[1]],
@@ -201,7 +201,7 @@ class MockData {
       type: "Design",
     ),
     ProjectModel(
-      projectId: "p002",
+      projectId: "p003",
       projectName: "Backend System",
       taskDeadLine: DateTime(2025, 7, 25),
       taskAssigned: [listUserMock[0], listUserMock[2]],
@@ -216,7 +216,7 @@ class MockData {
       type: "Research",
     ),
     ProjectModel(
-      projectId: "p003",
+      projectId: "p004",
       projectName: "Frontend Redesign",
       taskDeadLine: DateTime(2025, 7, 20),
       taskAssigned: [listUserMock[0], listUserMock[1]],
@@ -231,7 +231,7 @@ class MockData {
       type: "Design",
     ),
     ProjectModel(
-      projectId: "p002",
+      projectId: "p005",
       projectName: "Backend System",
       taskDeadLine: DateTime(2025, 7, 25),
       taskAssigned: [listUserMock[0], listUserMock[2]],
@@ -242,7 +242,23 @@ class MockData {
       progress: 0.85,
       description:
           "Prepare the database schemaPrepare the database schemaPrepare the database schema",
-      typeProcess: "COMPLETE",
+      typeProcess: "TODO",
+      urgent: "High",
+      type: "Research",
+    ),
+    ProjectModel(
+      projectId: "p006",
+      projectName: "Backend System",
+      taskDeadLine: DateTime(2025, 7, 25),
+      taskAssigned: [listUserMock[0], listUserMock[2]],
+      // Alice + Diana
+      taskCreatedBy: listUserMock[3],
+      // Urgot
+      listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
+      progress: 0.85,
+      description:
+      "Prepare the database schemaPrepare the database schemaPrepare the database schema",
+      typeProcess: "TODO",
       urgent: "High",
       type: "Research",
     ),

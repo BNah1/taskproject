@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskproject/feature/chat/sub_view/chat_box_view.dart';
+import 'package:taskproject/feature/chat/sub_view/info_user_chat_view.dart';
+import 'package:taskproject/feature/chat/sub_view/searching_chat_view.dart';
 import 'package:taskproject/feature/home/view/home_view.dart';
 import 'package:taskproject/feature/login/view/on_boarding.dart';
 import 'package:taskproject/feature/task/view/task_view.dart';
 import 'package:taskproject/model/task_model.dart';
+import 'package:taskproject/model/user_model.dart';
 
 
 
@@ -17,6 +20,8 @@ class AppRoutes {
   static const String taskView = '/taskView';
   static const String onBoarding = '/onBoarding';
   static const String chatBox = '/chatBox';
+  static const String userInfoChat = '/userInfoChat';
+  static const String searchChat = '/searchChat';
 
   static Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -30,6 +35,18 @@ class AppRoutes {
         final task = settings.arguments as TaskModel;
         return MaterialPageRoute(
           builder: (_) => TaskView(task: task),
+        );
+
+      case userInfoChat:
+        final userId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => InfoUserChatView(userId: userId,),
+        );
+
+      case searchChat:
+        final user = settings.arguments as UserModel;
+        return MaterialPageRoute(
+          builder: (_) => SearchingChatView(user: user,),
         );
 
       case chatBox:

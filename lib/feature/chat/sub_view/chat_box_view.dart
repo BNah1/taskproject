@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskproject/core/constant/app_style.dart';
+import 'package:taskproject/core/constant/routes.dart';
 import 'package:taskproject/core/mock/data.dart';
 import 'package:taskproject/core/utils/mock_utils.dart';
 import 'package:taskproject/core/utils/snapshot_utils.dart';
@@ -45,6 +47,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
           onSuccess: () {
             return Scaffold(
               appBar: AppBar(
+                actions: [_actionButtonAppBar()],
                 leading: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.blue),
@@ -75,6 +78,28 @@ class _ChatBoxViewState extends State<ChatBoxView> {
           },
         );
       },
+    );
+  }
+
+  Widget _actionButtonAppBar() {
+    return Row(
+      children: [
+        const Icon(Icons.call, color: Colors.blue),
+        const SizedBox(width: AppSize.paddingDashBoard),
+        const Icon(Icons.video_camera_back_rounded, color: Colors.blue),
+        const SizedBox(width: AppSize.paddingDashBoard),
+        InkWell(
+          onTap: () {
+            Navigator.of(
+              context,
+              rootNavigator: true,
+            ).pushNamed(AppRoutes.userInfoChat, arguments: widget.userId);
+            print('object');
+          },
+          child: const Icon(Icons.info_rounded, color: Colors.blue),
+        ),
+        const SizedBox(width: AppSize.paddingMenu),
+      ],
     );
   }
 

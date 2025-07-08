@@ -11,11 +11,9 @@ class TaskBoardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return SizedBox(
-      height: height/8,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+    return IntrinsicHeight(
+      child: Container(
+       padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,11 +50,11 @@ class TaskBoardTile extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(task.taskName, style: AppTextStyle.textTitleTask(AppColor.taskTileBoard),),
           const SizedBox(height: 5),
           Text(task.taskTypeProgress,style: AppTextStyle.textBodyTask(AppColor.taskTileBoard)),
-          const SizedBox(width: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -27,14 +27,17 @@ void showToast(
   }
 }
 
-void _showModal(BuildContext context, Widget child) {
+void showModal(BuildContext context, Widget child) {
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
+    useRootNavigator: true,
     builder: (BuildContext context) {
-      return FractionallySizedBox(
-        heightFactor: 0.4,
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: child,
       );
     },

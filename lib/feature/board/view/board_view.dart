@@ -3,7 +3,7 @@ import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/mock/data.dart';
 import 'package:taskproject/core/utils/valid_utils.dart';
 import 'package:taskproject/core/widget/container_tile_widget.dart';
-import 'package:taskproject/feature/board/view/task_board_tile.dart';
+import 'package:taskproject/feature/board/view/widget/task_board_tile.dart';
 import 'package:taskproject/model/task_model.dart';
 
 class BoardView extends StatefulWidget {

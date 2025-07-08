@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/widget/container_tile_widget.dart';
 
 class ErrorWidget extends StatelessWidget {

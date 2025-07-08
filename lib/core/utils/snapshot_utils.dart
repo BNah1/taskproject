@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/constant/app_enum.dart';
 import 'package:taskproject/core/widget/loader_widget.dart';
+import 'package:taskproject/model/base_state.dart';
 
 Widget checkSnapShot<T>(AsyncSnapshot<List<T>> snapshot, Widget Function(List<T>) onData){
   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,5 +41,19 @@ Widget buildStateView<T>({
     case BaseStatus.initial:
     default:
       return const Loader();
+  }
+}
+
+
+Widget handleWidget<T>(BaseState state, Widget Function() onData){
+  switch (state.status) {
+    case BaseStatus.loading:
+      return const Loader();
+    case BaseStatus.error:
+      return Center(child: Text('Error: ${state.errorMessage}'));
+    case BaseStatus.empty:
+      return const Center(child: Text('Empty'));
+    default:
+      return onData();
   }
 }
