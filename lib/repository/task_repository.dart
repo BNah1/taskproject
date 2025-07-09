@@ -9,4 +9,8 @@ class TaskRepository{
 
 
   Future<List<TaskModel>> getAllTask() => _service.getAllTask();
+  Future<void> addTask(TaskModel task) => _service.addTask(task);
+  Future<void> deleteTask(TaskModel task) => _service.deleteTask(task);
+
 }
+

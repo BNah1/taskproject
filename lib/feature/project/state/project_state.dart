@@ -24,6 +24,21 @@ class ProjectCubit extends Cubit<ProjectControllerModel> {
     }
   }
 
+  Future<void> deleteProject(String projectId) async {
+    try {
+      emit(state.copyWith(status: BaseStatus.loading));
+      final list = await _repository.deleteProject(
+        listProject: state.listProject,
+        projectId: projectId,
+      );
+      emit(state.copyWith(status: BaseStatus.loaded, listProject: list));
+    } catch (e) {
+      emit(
+        state.copyWith(status: BaseStatus.error, errorMessage: e.toString()),
+      );
+    }
+  }
+
   Future<void> addProject({
     required String projectName,
     required DateTime taskDeadLine,
@@ -35,7 +50,7 @@ class ProjectCubit extends Cubit<ProjectControllerModel> {
   }) async {
     try {
       emit(state.copyWith(status: BaseStatus.loading));
-      final projectId = 'p00${state.listProject.length +1}';
+      final projectId = 'p00${state.listProject.length + 1}';
 
       ProjectModel project = ProjectModel(
         projectId: projectId,

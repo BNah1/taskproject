@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:taskproject/core/constant/app_style.dart';
+import 'package:taskproject/core/utils/toast_utils.dart';
 import 'package:taskproject/feature/home/view/widget/list_project_widget.dart';
 import 'package:taskproject/feature/home/view/widget/profile_dashboard.dart';
 import 'package:taskproject/feature/project/view/project_view.dart';
 import 'package:taskproject/feature/task/view/widget/list_task_widget.dart';
-
+import 'package:taskproject/feature/task/view/widget/task_create_widget.dart';
 
 class DashBoardView extends StatelessWidget {
   const DashBoardView({super.key});
@@ -12,33 +13,38 @@ class DashBoardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSize.paddingDashBoard,
-          horizontal: AppSize.paddingDashBoard),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSize.paddingDashBoard,
+        horizontal: AppSize.paddingDashBoard,
+      ),
       child: Column(
         children: [
-          const SizedBox(
-            height: 60,
-          ),
+          const SizedBox(height: 60),
           const ProfileDashBoard(),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           containTile(
-              'Your project',
-              const SizedBox(height: 250, child: ListProjectWidget()),
-              'See all',
-                  () {
-                    Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
-                        builder: (context) => const ProjectView(), maintainState: false));
-
-              }),
-          const SizedBox(height: 45,),
+            'Your project',
+            const SizedBox(height: 250, child: ListProjectWidget()),
+            'See all',
+            () {
+              Navigator.of(context, rootNavigator: false).push(
+                MaterialPageRoute(
+                  builder: (context) => const ProjectView(),
+                  maintainState: false,
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 45),
           Expanded(
             child: containTile(
-                'Your tasks',
-                const Expanded(child: ListTaskWidget()),
-                'Add tasks',
-                    () {}),
+              'Your tasks',
+              const Expanded(child: ListTaskWidget()),
+              'Add tasks',
+              () {
+                showModal(context, const TaskCreateWidget());
+              },
+            ),
           ),
         ],
       ),
@@ -46,19 +52,26 @@ class DashBoardView extends StatelessWidget {
   }
 
   Widget containTile(
-      String title, Widget child, String action, VoidCallback tap) {
+    String title,
+    Widget child,
+    String action,
+    VoidCallback tap,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title,style: AppTextStyle.dashboardTitle,),
-            InkWell(onTap: tap, child: Text(action,style: AppTextStyle.dashboardAction,)),
+            Text(title, style: AppTextStyle.dashboardTitle),
+            InkWell(
+              onTap: tap,
+              child: Text(action, style: AppTextStyle.dashboardAction),
+            ),
           ],
         ),
-        const SizedBox(height: AppSize.paddingDashBoard,),
-        child
+        const SizedBox(height: AppSize.paddingDashBoard),
+        child,
       ],
     );
   }

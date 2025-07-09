@@ -22,9 +22,9 @@ class _SignInViewState extends State<SignInView> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
-  late SMITrigger _successAnim;
-  late SMITrigger _errorAnim;
-  late SMITrigger _confettiAnim;
+  // late SMITrigger _successAnim;
+  // late SMITrigger _errorAnim;
+  // late SMITrigger _confettiAnim;
 
   bool _isLoading = false;
 
@@ -39,16 +39,16 @@ class _SignInViewState extends State<SignInView> {
     final controller =
     StateMachineController.fromArtboard(artboard, "State Machine 1");
     artboard.addController(controller!);
-    _successAnim = controller.findInput<bool>("Check") as SMITrigger;
-    _errorAnim = controller.findInput<bool>("Error") as SMITrigger;
+    // _successAnim = controller.findInput<bool>("Check") as SMITrigger;
+    // _errorAnim = controller.findInput<bool>("Error") as SMITrigger;
   }
 
-  void _onConfettiRiveInit(Artboard artboard) {
+  void _onConfettiRiveInit(Artboard artBoard) {
     final controller =
-    StateMachineController.fromArtboard(artboard, "State Machine 1");
-    artboard.addController(controller!);
-    _confettiAnim =
-    controller.findInput<bool>("Trigger explosion") as SMITrigger;
+    StateMachineController.fromArtboard(artBoard, "State Machine 1");
+    artBoard.addController(controller!);
+    // _confettiAnim =
+    // controller.findInput<bool>("Trigger explosion") as SMITrigger;
   }
 
   @override

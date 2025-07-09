@@ -12,6 +12,7 @@ class TaskControllerModel extends BaseState {
     this.listTask = const [],
   });
 
+  @override
   TaskControllerModel copyWith({
     List<TaskModel>? listTask,
     BaseStatus? status,

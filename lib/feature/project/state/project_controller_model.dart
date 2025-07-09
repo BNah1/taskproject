@@ -38,7 +38,7 @@ class ProjectControllerModel extends BaseState {
   }
 
   List<ProjectModel> listProjectById(UserModel user){
-    return listProject.where((e) => e.taskAssigned.contains(user))
+    return listProject.where((e) => e.taskAssigned.contains(user) || e.taskCreatedBy == user)
         .toList();
   }
 

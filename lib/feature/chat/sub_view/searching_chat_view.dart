@@ -7,6 +7,7 @@ import 'package:taskproject/core/mock/data.dart';
 import 'package:taskproject/core/utils/mock_utils.dart';
 import 'package:taskproject/core/utils/valid_utils.dart';
 import 'package:taskproject/feature/chat/state/chat_state.dart';
+import 'package:taskproject/feature/login/state/auth_state.dart';
 import 'package:taskproject/model/message_model.dart';
 import 'package:taskproject/model/user_model.dart';
 
@@ -100,13 +101,15 @@ class _SearchingChatViewState extends State<SearchingChatView> {
 
 
   Widget _messageTile(Message message){
+    final user = getUser(message.senderId);
+    final myId = context.watch<AuthenticationCubit>().state.userModel!.id;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSize.paddingMenu),
       child: Row(
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(widget.user.pathImage),
+            backgroundImage: AssetImage(user.pathImage),
           ),
 
           const SizedBox(width: AppSize.paddingMenu,),
@@ -115,7 +118,7 @@ class _SearchingChatViewState extends State<SearchingChatView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.user.userName),
+                Text(myId == user.id ? 'You' : user.userName),
                 Text(
                   message.message,
                   maxLines: 2,

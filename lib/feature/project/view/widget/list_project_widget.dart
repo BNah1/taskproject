@@ -14,7 +14,11 @@ import 'package:taskproject/feature/project/view/widget/project_detail_widget.da
 import 'package:taskproject/model/project_model.dart';
 
 class ListProject extends StatefulWidget {
-  const ListProject({super.key, required this.title, required this.typeProject});
+  const ListProject({
+    super.key,
+    required this.title,
+    required this.typeProject,
+  });
 
   final String title;
   final TypeProject typeProject;
@@ -28,90 +32,130 @@ class _ListProjectState extends State<ListProject> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
-        children: [
-          ///
-          _headerColumn(title: widget.title, typeProject: widget.typeProject),
-          ///
-          const SizedBox(height: 10),
-          Expanded(
-              child: _listProject()
-          ),
-        ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ///
+            _headerColumn(title: widget.title, typeProject: widget.typeProject),
+
+            ///
+            const SizedBox(height: 10),
+            _listProject(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _listProject(){
+  Widget _listProject() {
     final int addCart = widget.typeProject == TypeProject.todo ? 1 : 0;
-    return BlocBuilder<ProjectCubit,ProjectControllerModel>(
-      builder: (context,state) {
+    return BlocBuilder<ProjectCubit, ProjectControllerModel>(
+      builder: (context, state) {
         final List<ProjectModel> list;
         final user = context.watch<AuthenticationCubit>().state.userModel!;
-        list = state.getListByType(widget.typeProject).where((e) => e.taskAssigned.contains(user) || e.taskCreatedBy == user)
+        list = state
+            .getListByType(widget.typeProject)
+            .where(
+              (e) => e.taskAssigned.contains(user) || e.taskCreatedBy == user,
+            )
             .toList();
-        return handleWidget(state, (){
+        return handleWidget(state, () {
           return DragTarget<ProjectModel>(
-              onWillAcceptWithDetails: (data) => true,
-              onAcceptWithDetails: (projectDetails) {
-                final project = projectDetails.data;
+            onWillAcceptWithDetails: (data) => true,
+            onAcceptWithDetails: (projectDetails) {
+              final project = projectDetails.data;
 
-                if (!list.contains(project)) {
-                  context.read<ProjectCubit>().updateProject(projectId: project.projectId,typeProcess: widget.title);
-                }
-
-              },
-              builder: (context, candidateData, rejectedData) {
-                return ListView.builder(
-                  itemCount: list.length + addCart,
-                  itemBuilder: (context, index) {
-                    if (widget.typeProject == TypeProject.todo && index == list.length) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: InkWell(onTap: () {
-                          showModal(context, const ProjectCreateWidget());
-                        }, child: _buttonAdd()),
-                      );
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: _buildDraggableCard(list[index]),
-                    );
-                  },
+              if (!list.contains(project)) {
+                context.read<ProjectCubit>().updateProject(
+                  projectId: project.projectId,
+                  typeProcess: widget.title,
                 );
               }
+            },
+            builder: (context, candidateData, rejectedData) {
+              if (list.isEmpty) {
+                return widget.typeProject == TypeProject.todo
+                    ? Column(
+                        children: [
+                          const Center(
+                            child: Text(
+                              'Empty List',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          _buttonAdd(),
+                        ],
+                      )
+                    : const Padding(
+                      padding:  EdgeInsets.symmetric(vertical: AppSize.paddingDashBoard*2),
+                      child: Center(
+                          child: Text(
+                            'Empty List',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                    );
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: list.length + addCart,
+                itemBuilder: (context, index) {
+                  if (widget.typeProject == TypeProject.todo &&
+                      index == list.length) {
+                    return _buttonAdd();
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: _buildDraggableCard(list[index]),
+                  );
+                },
+              );
+            },
           );
         });
-      }
+      },
     );
   }
 
   Widget _buttonAdd() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(15),
-        color: Colors.blueAccent,
-        strokeWidth: 2,
-        dashPattern: const [5, 8],
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          color: Colors.grey[100],
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.add, color: Colors.blue),
-                const SizedBox(width: 10),
-                Text('Add card', style: AppTextStyle.textTitleTask(Colors.brown)),
-              ],
+    return InkWell(
+      onTap: () {
+        showModal(context, const ProjectCreateWidget());
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+        child: DottedBorder(
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(5),
+          color: Colors.black,
+          strokeWidth: 1,
+          dashPattern: const [4, 5],
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            color: Colors.grey[100],
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.add, color: Colors.black),
+                  Text(
+                    'Add card',
+                    style: AppTextStyle.textTitleTask(Colors.black),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -119,8 +163,12 @@ class _ListProjectState extends State<ListProject> {
     );
   }
 
-  Widget _headerColumn({required String title, required TypeProject typeProject}) {
+  Widget _headerColumn({
+    required String title,
+    required TypeProject typeProject,
+  }) {
     final color = ColorPool(AppColor.taskColors).getNext();
+    final user = context.watch<AuthenticationCubit>().state.userModel!;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -133,7 +181,8 @@ class _ListProjectState extends State<ListProject> {
             children: [
               ///
               Text(title, style: AppTextStyle.textBodyTile()),
-              const SizedBox(width: 5,),
+              const SizedBox(width: 5),
+
               ///
               Container(
                 decoration: BoxDecoration(
@@ -141,23 +190,43 @@ class _ListProjectState extends State<ListProject> {
                   border: Border.all(color: Colors.brown),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<ProjectCubit,ProjectControllerModel>(
+                child: BlocBuilder<ProjectCubit, ProjectControllerModel>(
                   builder: (context, state) {
-                    if(state.status == BaseStatus.loaded){
-                      final length = state.getListByType(typeProject).length;
-                      return Text(length.toString(),style: const TextStyle(color:Colors.brown),);
+                    if (state.status == BaseStatus.loaded) {
+                      final length = state
+                          .getListByType(widget.typeProject)
+                          .where(
+                            (e) =>
+                                e.taskAssigned.contains(user) ||
+                                e.taskCreatedBy == user,
+                          )
+                          .toList()
+                          .length;
+                      return Text(
+                        length.toString(),
+                        style: const TextStyle(color: Colors.brown),
+                      );
                     } else {
-                      return const Text('-',style: TextStyle(color:Colors.brown),);
+                      return const Text(
+                        '-',
+                        style: TextStyle(color: Colors.brown),
+                      );
                     }
-                  }
+                  },
                 ),
               ),
             ],
           ),
+
           ///
           SizedBox(
-              width: 40,
-              child: SvgPicture.asset('assets/icons/menu-dots.svg',color: Colors.grey,fit: BoxFit.cover,))
+            width: 40,
+            child: SvgPicture.asset(
+              'assets/icons/menu-dots.svg',
+              color: Colors.grey,
+              fit: BoxFit.cover,
+            ),
+          ),
         ],
       ),
     );
@@ -181,4 +250,3 @@ class _ListProjectState extends State<ListProject> {
     );
   }
 }
-

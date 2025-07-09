@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taskproject/core/utils/mock_utils.dart';
 import 'package:taskproject/core/utils/snapshot_utils.dart';
 import 'package:taskproject/feature/login/state/auth_state.dart';
 import 'package:taskproject/feature/task/state/task_controller_model.dart';
 import 'package:taskproject/feature/task/state/task_state.dart';
 import 'package:taskproject/feature/task/view/widget/task_tile.dart';
-import 'package:taskproject/model/task_model.dart';
 
 class ListTaskWidget extends StatelessWidget {
   const ListTaskWidget({super.key});

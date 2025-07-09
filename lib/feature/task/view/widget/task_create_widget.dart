@@ -2,23 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskproject/core/constant/app_enum.dart';
 import 'package:taskproject/core/constant/app_style.dart';
+import 'package:taskproject/core/mock/data.dart';
 import 'package:taskproject/feature/login/state/auth_state.dart';
-import 'package:taskproject/feature/project/state/project_state.dart';
+import 'package:taskproject/feature/task/state/task_state.dart';
+import 'package:taskproject/model/project_model.dart';
 
-class ProjectCreateWidget extends StatefulWidget {
-  const ProjectCreateWidget({super.key});
+class TaskCreateWidget extends StatefulWidget {
+  const TaskCreateWidget({super.key});
 
   @override
-  State<ProjectCreateWidget> createState() => _ProjectCreateWidgetState();
+  State<TaskCreateWidget> createState() => _TaskCreateWidgetState();
 }
 
-class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
+class _TaskCreateWidgetState extends State<TaskCreateWidget> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   final _descCtrl = TextEditingController();
   String? _selectedType;
   String? _selectedUrgency;
-  DateTime? _deadline;
+  DateTime? _deadlineMin;
+  DateTime? _deadlineMax;
+  final List<ProjectModel> listProject = MockData.listProjectMock;
+  String? _selectedProjectId;
   final double sizeHeight = 50;
 
   @override
@@ -29,25 +34,25 @@ class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
   }
 
   Future<void> _onSubmit() async {
-
-    /// mock
-    _deadline = DateTime.now().add(const Duration(days: 1));
-
-
     final user = context.read<AuthenticationCubit>().state.userModel!;
 
-    if (!_formKey.currentState!.validate() || _deadline == null) return;
+    if (!_formKey.currentState!.validate() ||
+        _deadlineMin == null ||
+        _deadlineMax == null ||
+        _selectedProjectId == null) {
+      return;
+    }
 
-    final cubit = context.read<ProjectCubit>();
+    final cubit = context.read<TaskCubit>();
 
-    await cubit.addProject(
-      projectName: _nameCtrl.text.trim(),
-      description: _descCtrl.text.trim(),
-      taskDeadLine: _deadline!,
-      type: _selectedType!,
-      urgent: _selectedUrgency!,
-      typeProcess: 'TODO',
+    await cubit.addTask(
+      taskName: _nameCtrl.text.trim(),
+      taskDeadLineMin: _deadlineMin!,
+      taskDeadLineMax: _deadlineMax!,
       taskCreatedBy: user,
+      descriptions: _descCtrl.text.trim(),
+      urgent: _selectedUrgency ?? '',
+      projectId: _selectedProjectId!,
     );
 
     if (mounted) Navigator.pop(context);
@@ -64,39 +69,44 @@ class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 20),
+            _input(_nameCtrl, 'Task name'),
+            const SizedBox(height: 10),
+            _input(_descCtrl, 'Description'),
+            const SizedBox(height: 10),
             _dropdownField(
-              label: 'Project position',
+              label: 'Type',
               value: _selectedType,
               options: typeOptions,
               onChanged: (val) => setState(() => _selectedType = val),
             ),
             const SizedBox(height: 10),
-            _input(_nameCtrl, 'Project name'),
-            const SizedBox(height: 10),
-            _input(_descCtrl, 'Project description'),
-
-            const SizedBox(height: 10),
             _dropdownField(
-              label: 'Project urgent',
+              label: 'Urgency',
               value: _selectedUrgency,
               options: urgencyOptions,
               onChanged: (val) => setState(() => _selectedUrgency = val),
             ),
-
             const SizedBox(height: 10),
-            // _timePicker(),
+            _projectDropdown(),
+            const SizedBox(height: 10),
+            _timePicker(
+              label: 'Deadline Min',
+              current: _deadlineMin,
+              onPick: (dt) => setState(() => _deadlineMin = dt),
+            ),
+            _timePicker(
+              label: 'Deadline Max',
+              current: _deadlineMax,
+              onPick: (dt) => setState(() => _deadlineMax = dt),
+            ),
             const SizedBox(height: 10),
             InkWell(
               onTap: _onSubmit,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSize.paddingDashBoard,
-                  vertical: AppSize.paddingDashBoard,
-                ),
+                padding: const EdgeInsets.all(AppSize.paddingDashBoard),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(7),
                   color: Colors.blue,
                 ),
                 child: Center(
@@ -107,7 +117,7 @@ class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
                 ),
               ),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -139,59 +149,6 @@ class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
               ),
               validator: (value) =>
                   (value == null || value.isEmpty) ? 'Required' : null,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _timePicker() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Project deadline',
-          style: AppTextStyle.textTitleTask(Colors.black),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSize.paddingDashBoard,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            color: Colors.black12,
-          ),
-          child: InkWell(
-            onTap: () async {
-              final picked = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-                initialDate: DateTime.now(),
-              );
-              if (picked != null) {
-                setState(() => _deadline = picked);
-              }
-            },
-            child: SizedBox(
-              height: sizeHeight,
-              child: Row(
-                children: [
-                  const Icon(Icons.date_range, color: Colors.grey),
-                  const SizedBox(width: 15),
-                  _deadline != null
-                      ? Text(
-                          _deadline!.toLocal().toString().split(' ')[0],
-                          style: AppTextStyle.textTitleTask(Colors.black),
-                        )
-                      : Text(
-                          'Pick a deadline please',
-                          style: AppTextStyle.textTitleTask(Colors.brown),
-                        ),
-                ],
-              ),
             ),
           ),
         ),
@@ -238,6 +195,87 @@ class _ProjectCreateWidgetState extends State<ProjectCreateWidget> {
               onChanged: onChanged,
               validator: (val) =>
                   val == null || val.isEmpty ? 'Required' : null,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _projectDropdown() {
+    return _dropdownField(
+      label: 'Project',
+      value: _selectedProjectId,
+      options: listProject.map((p) => p.projectId).toList(),
+      onChanged: (val) => setState(() => _selectedProjectId = val),
+    );
+  }
+
+  Widget _timePicker({
+    required String label,
+    required DateTime? current,
+    required void Function(DateTime) onPick,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Project deadline',
+          style: AppTextStyle.textTitleTask(Colors.black),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSize.paddingDashBoard,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            color: Colors.black12,
+          ),
+          child: InkWell(
+            onTap: () async {
+              final pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2022),
+                lastDate: DateTime(2100),
+              );
+              if (pickedDate != null) {
+                if (mounted) {
+                  final pickedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                  );
+                  if (pickedTime != null) {
+                    final fullDateTime = DateTime(
+                      pickedDate.year,
+                      pickedDate.month,
+                      pickedDate.day,
+                      pickedTime.hour,
+                      pickedTime.minute,
+                    );
+                    onPick(fullDateTime);
+                  }
+                }
+              }
+            },
+            child: SizedBox(
+              height: sizeHeight,
+              child: Row(
+                children: [
+                  const Icon(Icons.date_range, color: Colors.grey),
+                  const SizedBox(width: 15),
+                  current != null
+                      ? Text(
+                          current.toLocal().toString().split(' ')[0],
+                          style: AppTextStyle.textTitleTask(Colors.black),
+                        )
+                      : Text(
+                          'Pick a deadline please',
+                          style: AppTextStyle.textTitleTask(Colors.brown),
+                        ),
+                ],
+              ),
             ),
           ),
         ),

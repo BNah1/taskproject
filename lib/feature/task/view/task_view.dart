@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskproject/core/constant/app_string.dart';
 import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/utils/valid_utils.dart';
 import 'package:taskproject/core/widget/container_tile_widget.dart';
 import 'package:taskproject/core/widget/list_user_tile_widget.dart';
+import 'package:taskproject/feature/task/state/task_state.dart';
 import 'package:taskproject/feature/task/view/widget/sub_task_tile.dart';
 import 'package:taskproject/model/task_model.dart';
 
@@ -22,10 +24,12 @@ class _TaskViewState extends State<TaskView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppString.titleTaskView,style: AppTextStyle.textBodyTile(),),
-        actions: const [Padding(
+        actions: [const Padding(
           padding: EdgeInsets.only(right: AppSize.paddingDashBoard),
           child: Icon(Icons.menu),
-        )],
+        ),
+          _deleteButton()
+        ],
       ),
 
       body: SingleChildScrollView(
@@ -62,6 +66,17 @@ class _TaskViewState extends State<TaskView> {
         ),
       ),
     );
+  }
+
+  Widget _deleteButton(){
+    return InkWell(
+        onTap: () async {
+          await context.read<TaskCubit>().deleteTask(widget.task);
+          if(mounted){
+            Navigator.of(context).pop();
+          }
+        },
+        child: const Icon(Icons.delete));
   }
 
   Widget _teamTile(){

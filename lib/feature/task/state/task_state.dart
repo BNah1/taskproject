@@ -1,14 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:taskproject/core/constant/app_enum.dart';
 import 'package:taskproject/feature/task/state/task_controller_model.dart';
 import 'package:taskproject/model/task_model.dart';
 import 'package:taskproject/model/user_model.dart';
 import 'package:taskproject/repository/task_repository.dart';
+import 'package:taskproject/service/task_project_service.dart';
 
 class TaskCubit extends Cubit<TaskControllerModel> {
-  TaskCubit() : super(TaskControllerModel());
-  final _repository = GetIt.I<TaskRepository>();
+  final TaskRepository _repository;
+  final TaskProjectService _taskProjectService;
+
+  TaskCubit({
+    required TaskRepository repository,
+    required TaskProjectService taskProjectService,
+  })  : _repository = repository,
+        _taskProjectService = taskProjectService,
+        super(TaskControllerModel());
+
 
   Future<void> init() async {
     emit(state.copyWith(status: BaseStatus.initial));
@@ -23,35 +31,56 @@ class TaskCubit extends Cubit<TaskControllerModel> {
     }
   }
 
+  Future<String?> deleteTask(TaskModel task)async {
+    try {
+      emit(state.copyWith(status: BaseStatus.loading));
+
+      await _taskProjectService.deleteTask(task);
+
+      final updatedTasks = List<TaskModel>.from(state.listTask)..removeWhere((t) => task.taskId == t.taskId);
+
+      emit(state.copyWith(status: BaseStatus.loaded, listTask: updatedTasks));
+
+      return null;
+    } catch (e) {
+      emit(
+        state.copyWith(status: BaseStatus.error, errorMessage: e.toString()),
+      );
+      return e.toString();
+    }
+  }
+
   Future<void> addTask({
     required String taskName,
-    required String taskId,
     required DateTime taskDeadLineMin,
     required UserModel taskCreatedBy,
-    required List<String> subTasks,
     required String descriptions,
     required String urgent,
     required String projectId,
     required DateTime taskDeadLineMax,
-    required String taskTypeProgress,
   }) async {
     try {
       emit(state.copyWith(status: BaseStatus.loading));
 
+      final length = state.listTask.length +1;
+      final id = 't0$length';
+
       final TaskModel task = TaskModel(
         taskName,
-        taskId,
+        id,
         taskDeadLineMin,
         [],
         taskCreatedBy,
-        subTasks,
+        [],
         descriptions,
         urgent,
         projectId,
         taskDeadLineMax,
         0,
-        taskTypeProgress,
+        'TODO',
       );
+
+      await _taskProjectService.addTask(task);
 
       final updatedTasks = List<TaskModel>.from(state.listTask)..add(task);
 
