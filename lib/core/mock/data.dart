@@ -146,7 +146,7 @@ class MockData {
       ["Dashboard screen", "Profile screen"],
       "Quick review of UI progress",
       "Medium",
-      "p010",
+      "p001",
       DateTime(2025, 7, 2, 10, 0),
       0.3,
       "Complete",
@@ -161,7 +161,7 @@ class MockData {
       ["Error on wrong credentials", "Missing loader"],
       "Handle edge cases in login",
       "High",
-      "p011",
+      "p005",
       DateTime(2025, 7, 2, 12, 50),
       0.5,
       "Complete",
@@ -176,7 +176,7 @@ class MockData {
       ["API usage", "Error handling"],
       "Prepare docs for handoff",
       "Low",
-      "p012",
+      "p004",
       DateTime(2025, 7, 2, 14, 0),
       0.2,
       "Complete",
@@ -191,7 +191,7 @@ class MockData {
       ["API usage", "Error handling"],
       "Prepare docs for handoff",
       "Low",
-      "p012",
+      "p003",
       DateTime(2025, 7, 2, 17, 0),
       0.2,
       "Complete",
@@ -207,7 +207,6 @@ class MockData {
       // Alice + Bob
       taskCreatedBy: listUserMock[2],
       // Diana
-      listTask: listTaskMock.where((task) => task.projectId == "p001").toList(),
       progress: 0.7,
       description:
           "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schema",
@@ -223,7 +222,6 @@ class MockData {
       // Alice + Bob
       taskCreatedBy: listUserMock[2],
       // Diana
-      listTask: listTaskMock.where((task) => task.projectId == "p003").toList(),
       progress: 0.7,
       description:
           "Prepare the database schema Prepare the database schemaPrepare the database schemaPrepare the database schemaPrepare the database schema",
@@ -239,7 +237,6 @@ class MockData {
       // Alice + Diana
       taskCreatedBy: listUserMock[3],
       // Urgot
-      listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
       progress: 0.85,
       description: "Prepare the database schema",
       typeProcess: "COMPLETE",
@@ -254,7 +251,6 @@ class MockData {
       // Alice + Bob
       taskCreatedBy: listUserMock[2],
       // Diana
-      listTask: listTaskMock.where((task) => task.projectId == "p003").toList(),
       progress: 0.7,
       description: "Prepare the database schema",
       typeProcess: "IN WORK",
@@ -269,7 +265,6 @@ class MockData {
       // Alice + Diana
       taskCreatedBy: listUserMock[3],
       // Urgot
-      listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
       progress: 0.85,
       description:
           "Prepare the database schemaPrepare the database schemaPrepare the database schema",
@@ -285,7 +280,6 @@ class MockData {
       // Alice + Diana
       taskCreatedBy: listUserMock[3],
       // Urgot
-      listTask: listTaskMock.where((task) => task.projectId == "p002").toList(),
       progress: 0.85,
       description:
           "Prepare the database schemaPrepare the database schemaPrepare the database schema",

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/utils/toast_utils.dart';
 import 'package:taskproject/core/widget/container_tile_widget.dart';
 import 'package:taskproject/core/widget/list_user_tile_widget.dart';
+import 'package:taskproject/extension/task_list_extension.dart';
 import 'package:taskproject/feature/project/state/project_state.dart';
+import 'package:taskproject/feature/task/state/task_state.dart';
 import 'package:taskproject/model/project_model.dart';
+import 'package:taskproject/usecase/project_task_usecase.dart';
 
 class ProjectDetailWidget extends StatelessWidget {
   const ProjectDetailWidget({super.key, required this.project});
@@ -14,6 +18,7 @@ class ProjectDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final length = context.watch<TaskCubit>().state.listTask.getListTaskByProjectId(project.projectId).length;
     final color = colorPool.getNext();
     return ContainerCustomTile(
       color: Colors.white,
@@ -68,7 +73,7 @@ class ProjectDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${(project.listTask.length * project.progress).round()}/${project.listTask.length}',
+                    '${(length * project.progress).round()}/$length',
                     style: AppTextStyle.textHint(Colors.black),
                   ),
                 ],
@@ -135,9 +140,7 @@ class ProjectDetailWidget extends StatelessWidget {
             'Do you want to delete this project ?',
             'Confirm',
             (contextDialog) {
-              contextDialog.read<ProjectCubit>().deleteProject(
-                project.projectId,
-              );
+              GetIt.I<ProjectTaskUseCase>().deleteProject(project.projectId);
               if (contextDialog.mounted) {
                 Navigator.of(contextDialog).pop();
               }

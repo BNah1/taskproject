@@ -5,6 +5,7 @@ import 'package:taskproject/core/constant/app_style.dart';
 import 'package:taskproject/core/utils/valid_utils.dart';
 import 'package:taskproject/core/widget/container_tile_widget.dart';
 import 'package:taskproject/core/widget/list_user_tile_widget.dart';
+import 'package:taskproject/extension/task_list_extension.dart';
 import 'package:taskproject/feature/task/state/task_state.dart';
 import 'package:taskproject/feature/task/view/widget/sub_task_tile.dart';
 import 'package:taskproject/model/task_model.dart';
@@ -23,12 +24,16 @@ class _TaskViewState extends State<TaskView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppString.titleTaskView,style: AppTextStyle.textBodyTile(),),
-        actions: [const Padding(
-          padding: EdgeInsets.only(right: AppSize.paddingDashBoard),
-          child: Icon(Icons.menu),
+        title: Text(
+          AppString.titleTaskView,
+          style: AppTextStyle.textBodyTile(),
         ),
-          _deleteButton()
+        actions: [
+          const Padding(
+            padding: EdgeInsets.only(right: AppSize.paddingDashBoard),
+            child: Icon(Icons.menu),
+          ),
+          _deleteButton(),
         ],
       ),
 
@@ -37,83 +42,108 @@ class _TaskViewState extends State<TaskView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: AppSize.paddingDashBoard,),
-            ContainerCustomTile(paddingInside: 30,color: Colors.white, child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: AppSize.paddingDashBoard),
+            ContainerCustomTile(
+              paddingInside: 30,
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
+                children: [
+                  //title
+                  Text(
+                    widget.task.taskName,
+                    style: AppTextStyle.textBodyTile(),
+                  ),
+                  Text(
+                    widget.task.taskName,
+                    style: AppTextStyle.textBodyTile(
+                      size: AppSize.textSizeSubBody,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
 
-                //title
-                Text(widget.task.taskName,style: AppTextStyle.textBodyTile()),
-                Text(widget.task.taskName,style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
-                const SizedBox(height: 10,),
+                  //
+                  _detailMiddle(),
 
-                //
-                _detailMiddle(),
-
-                //
-                _detailBottom(),
-              ],
-            )),
+                  //
+                  _detailBottom(),
+                ],
+              ),
+            ),
 
             //
-            const SizedBox(height: AppSize.paddingDashBoard,),
+            const SizedBox(height: AppSize.paddingDashBoard),
             Padding(
               padding: const EdgeInsets.all(AppSize.paddingDashBoard),
               child: _bottomTile(),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _deleteButton(){
+  Widget _deleteButton() {
     return InkWell(
-        onTap: () async {
-          await context.read<TaskCubit>().deleteTask(widget.task);
-          if(mounted){
-            Navigator.of(context).pop();
-          }
-        },
-        child: const Icon(Icons.delete));
+      onTap: () async {
+        await context.read<TaskCubit>().deleteTask(widget.task);
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: const Icon(Icons.delete),
+    );
   }
 
-  Widget _teamTile(){
+  Widget _teamTile() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Team',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
-        const SizedBox(height: 10,),
-        Stack(children: [
-
-          Row(children: [
-            listUser(widget.task.taskAssigned),
-            const SizedBox(width: 20,),
-          ]),
-
-          Positioned(
-            right: 0,
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black12, width: 2),
-                color: Colors.white,
-              ),
-              child: const Center(
-                child: Icon(Icons.add, color: Colors.blue,)
-              ),
-            )
-
+        Text(
+          'Team',
+          style: AppTextStyle.textBodyTile(
+            size: AppSize.textSizeSubBody,
+            color: Colors.grey,
           ),
-        ]),
+        ),
+        const SizedBox(height: 10),
+        Stack(
+          children: [
+            Row(
+              children: [
+                listUser(widget.task.taskAssigned),
+                const SizedBox(width: 20),
+              ],
+            ),
+
+            Positioned(
+              right: 0,
+              child: Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black12, width: 2),
+                  color: Colors.white,
+                ),
+                child: const Center(child: Icon(Icons.add, color: Colors.blue)),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 
-  Widget _detailMiddle(){
+  Widget _detailMiddle() {
+    final length = context
+        .watch<TaskCubit>()
+        .state
+        .listTask
+        .getListTaskByProjectId(widget.task.projectId)
+        .length;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -121,28 +151,52 @@ class _TaskViewState extends State<TaskView> {
 
         Column(
           children: [
-            Text('My Projects',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey),),
-            const SizedBox(height: 10,),
-            Text('${widget.task.subTasks.length} tasks', style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.blueGrey),)
+            Text(
+              'My Projects',
+              style: AppTextStyle.textBodyTile(
+                size: AppSize.textSizeSubBody,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '$length tasks',
+              style: AppTextStyle.textBodyTile(
+                size: AppSize.textSizeSubBody,
+                color: Colors.blueGrey,
+              ),
+            ),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget _detailBottom(){
+  Widget _detailBottom() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: AppSize.paddingDashBoard,),
-            Text('Deadline',style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey)),
-            const SizedBox(height: 10,),
-            _timeTile(Icons.lock_clock, '${formatDateHour(widget.task.taskDeadLineMin)} - ${formatDateHour(widget.task.taskDeadLineMax)}'),
-            const SizedBox(height: 10,),
-            _timeTile(Icons.calendar_month_sharp, formatDateCalender(widget.task.taskDeadLineMin))
+            const SizedBox(height: AppSize.paddingDashBoard),
+            Text(
+              'Deadline',
+              style: AppTextStyle.textBodyTile(
+                size: AppSize.textSizeSubBody,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            _timeTile(
+              Icons.lock_clock,
+              '${formatDateHour(widget.task.taskDeadLineMin)} - ${formatDateHour(widget.task.taskDeadLineMax)}',
+            ),
+            const SizedBox(height: 10),
+            _timeTile(
+              Icons.calendar_month_sharp,
+              formatDateCalender(widget.task.taskDeadLineMin),
+            ),
           ],
         ),
 
@@ -162,52 +216,65 @@ class _TaskViewState extends State<TaskView> {
                   color: Colors.blueAccent,
                 ),
               ),
-              Text('${(widget.task.progress * 100).round()}%',style: AppTextStyle.textBodyTile(),),
+              Text(
+                '${(widget.task.progress * 100).round()}%',
+                style: AppTextStyle.textBodyTile(),
+              ),
             ],
           ),
-        )
-
+        ),
       ],
     );
   }
 
-
-  Widget _timeTile(IconData icon, String text){
+  Widget _timeTile(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, color: Colors.blueGrey,),
-        const SizedBox(width: AppSize.paddingMenu,),
-        Text(text, style:  AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.blueGrey),)
+        Icon(icon, color: Colors.blueGrey),
+        const SizedBox(width: AppSize.paddingMenu),
+        Text(
+          text,
+          style: AppTextStyle.textBodyTile(
+            size: AppSize.textSizeSubBody,
+            color: Colors.blueGrey,
+          ),
+        ),
       ],
     );
   }
 
-
-  Widget _bottomTile(){
+  Widget _bottomTile() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Description',style: AppTextStyle.textBodyTile()),
-        const SizedBox(height: AppSize.paddingMenu,),
-        Text(widget.task.descriptions,style: AppTextStyle.textBodyTile(size: AppSize.textSizeSubBody, color: Colors.grey),),
-        const SizedBox(height: AppSize.paddingDashBoard,),
+        Text('Description', style: AppTextStyle.textBodyTile()),
+        const SizedBox(height: AppSize.paddingMenu),
+        Text(
+          widget.task.descriptions,
+          style: AppTextStyle.textBodyTile(
+            size: AppSize.textSizeSubBody,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: AppSize.paddingDashBoard),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('SubTask',style: AppTextStyle.textBodyTile(),),
-            Text('+ Add task', style: AppTextStyle.dashboardAction,)
+            Text('SubTask', style: AppTextStyle.textBodyTile()),
+            Text('+ Add task', style: AppTextStyle.dashboardAction),
           ],
         ),
-        const SizedBox(height: AppSize.paddingMenu,),
-        listSubTasks()
+        const SizedBox(height: AppSize.paddingMenu),
+        listSubTasks(),
       ],
     );
   }
 
-  Widget listSubTasks(){
+  Widget listSubTasks() {
     return Column(
-      children: widget.task.subTasks.map((e) => SubTaskTile(subTask: e)).toList(),
+      children: widget.task.subTasks
+          .map((e) => SubTaskTile(subTask: e))
+          .toList(),
     );
   }
-
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskproject/core/constant/app_style.dart';
+import 'package:taskproject/extension/task_list_extension.dart';
+import 'package:taskproject/feature/task/state/task_state.dart';
 import 'package:taskproject/model/project_model.dart';
 import 'package:taskproject/model/user_model.dart';
 
@@ -12,7 +15,9 @@ class ProjectTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return _boxDecoration(_projectDetail(), size);
+    final length = context.watch<TaskCubit>().state.listTask.getListTaskByProjectId(project.projectId).length;
+
+    return _boxDecoration(_projectDetail(length), size);
   }
 
   Widget _boxDecoration(Widget child, Size size){
@@ -38,11 +43,11 @@ class ProjectTile extends StatelessWidget {
     );
   }
 
-  Widget _projectDetail(){
+  Widget _projectDetail(int length){
     return Column(
       children: [
         Expanded(
-          child: _projectDetailTop()
+          child: _projectDetailTop(length)
         ),
         _projectDetailBot()
       ],
@@ -78,7 +83,7 @@ class ProjectTile extends StatelessWidget {
     );
   }
 
-  Widget _projectDetailTop(){
+  Widget _projectDetailTop(int length){
     final randomColor = ColorPool(AppColor.taskColors).getNext();
     return Container(
       padding: const EdgeInsets.all(AppSize.paddingMenu),
@@ -114,7 +119,7 @@ class ProjectTile extends StatelessWidget {
           const SizedBox(height: AppSize.paddingDashBoard,),
           Text(project.projectName,style: AppTextStyle.textSubBodyProject(Colors.white70),maxLines: 1,
             overflow: TextOverflow.ellipsis,),
-          Text('${project.listTask.length} tasks',style: AppTextStyle.textSubBodyProject(Colors.white)),
+          Text('$length tasks',style: AppTextStyle.textSubBodyProject(Colors.white)),
           const SizedBox(height: AppSize.paddingDashBoard,),
         ],),
     );

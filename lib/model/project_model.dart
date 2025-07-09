@@ -7,7 +7,6 @@ class ProjectModel {
   final DateTime taskDeadLine;
   final List<UserModel> taskAssigned;
   final UserModel taskCreatedBy;
-  final List<TaskModel> listTask;
   final double progress;
   final String description;
   String typeProcess;
@@ -20,7 +19,6 @@ class ProjectModel {
     required this.taskDeadLine,
     required this.taskAssigned,
     required this.taskCreatedBy,
-    required this.listTask,
     required this.progress,
     required this.description,
     required this.typeProcess,
@@ -34,7 +32,6 @@ class ProjectModel {
     DateTime? taskDeadLine,
     List<UserModel>? taskAssigned,
     UserModel? taskCreatedBy,
-    List<TaskModel>? listTask,
     double? progress,
     String? description,
     String? typeProcess,
@@ -47,7 +44,6 @@ class ProjectModel {
       taskDeadLine: taskDeadLine ?? this.taskDeadLine,
       taskAssigned: taskAssigned ?? this.taskAssigned,
       taskCreatedBy: taskCreatedBy ?? this.taskCreatedBy,
-      listTask: listTask ?? this.listTask,
       progress: progress ?? this.progress,
       description: description ?? this.description,
       typeProcess: typeProcess ?? this.typeProcess,

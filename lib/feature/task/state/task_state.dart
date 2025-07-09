@@ -4,17 +4,13 @@ import 'package:taskproject/feature/task/state/task_controller_model.dart';
 import 'package:taskproject/model/task_model.dart';
 import 'package:taskproject/model/user_model.dart';
 import 'package:taskproject/repository/task_repository.dart';
-import 'package:taskproject/service/task_project_service.dart';
 
 class TaskCubit extends Cubit<TaskControllerModel> {
   final TaskRepository _repository;
-  final TaskProjectService _taskProjectService;
 
   TaskCubit({
     required TaskRepository repository,
-    required TaskProjectService taskProjectService,
   })  : _repository = repository,
-        _taskProjectService = taskProjectService,
         super(TaskControllerModel());
 
 
@@ -35,7 +31,7 @@ class TaskCubit extends Cubit<TaskControllerModel> {
     try {
       emit(state.copyWith(status: BaseStatus.loading));
 
-      await _taskProjectService.deleteTask(task);
+      await _repository.deleteTask(task);
 
       final updatedTasks = List<TaskModel>.from(state.listTask)..removeWhere((t) => task.taskId == t.taskId);
 
@@ -49,6 +45,36 @@ class TaskCubit extends Cubit<TaskControllerModel> {
       return e.toString();
     }
   }
+
+  Future<String?> deleteTaskByProjectId(String projectId)async {
+    try {
+      emit(state.copyWith(status: BaseStatus.loading));
+
+      final tasksToDelete = state.listTask
+          .where((t) => t.projectId == projectId)
+          .toList();
+
+      for(TaskModel task in tasksToDelete){
+        await _repository.deleteTask(task);
+      }
+
+      final updatedTasks = state.listTask
+          .where((t) => t.projectId != projectId)
+          .toList();
+
+
+      emit(state.copyWith(status: BaseStatus.loaded, listTask: updatedTasks));
+
+      return null;
+    } catch (e) {
+      emit(
+        state.copyWith(status: BaseStatus.error, errorMessage: e.toString()),
+      );
+      return e.toString();
+    }
+  }
+
+
 
   Future<void> addTask({
     required String taskName,
@@ -80,7 +106,7 @@ class TaskCubit extends Cubit<TaskControllerModel> {
         'TODO',
       );
 
-      await _taskProjectService.addTask(task);
+      await _repository.addTask(task);
 
       final updatedTasks = List<TaskModel>.from(state.listTask)..add(task);
 

@@ -9,8 +9,8 @@ import 'package:taskproject/repository/task_repository.dart';
 import 'package:taskproject/service/auth_service.dart';
 import 'package:taskproject/service/chat_service.dart';
 import 'package:taskproject/service/project_service.dart';
-import 'package:taskproject/service/task_project_service.dart';
 import 'package:taskproject/service/task_service.dart';
+import 'package:taskproject/usecase/project_task_usecase.dart';
 
 late final ChatCubit chatCubit;
 late final ProjectCubit projectCubit;
@@ -22,10 +22,9 @@ class AppInit {
   static Future<void> init() async {
     await registerDI();
 
-    await registerSubDI();
-
     await createCubit();
 
+    await registerUseCase();
   }
 
   static Future<void> registerDI() async {
@@ -53,14 +52,12 @@ class AppInit {
   static Future<void> createCubit() async {
     chatCubit = ChatCubit();
     projectCubit = ProjectCubit();
-    taskCubit = TaskCubit(repository: getIt<TaskRepository>(), taskProjectService: getIt<TaskProjectService>());
+    taskCubit = TaskCubit(repository: getIt<TaskRepository>());
   }
 
-  static Future<void> registerSubDI() async {
-    getIt.registerLazySingleton<TaskProjectService>(
-      () => TaskProjectService(projectCubit,
-          // taskCubit
-      ),
+  static Future<void> registerUseCase() async {
+    getIt.registerLazySingleton<ProjectTaskUseCase>(
+      () => ProjectTaskUseCase(taskCubit, projectCubit),
     );
   }
 }
